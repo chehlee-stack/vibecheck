@@ -42,6 +42,14 @@ _INPUT_FNS = {"is_action_pressed", "is_action_just_pressed", "is_action_just_rel
 _GROUP_CONSUMERS = {"is_in_group", "get_nodes_in_group", "call_group", "get_first_node_in_group", "remove_from_group",
                     "set_group", "notify_group", "call_group_flags", "has_group"}
 _IDENT_RE = re.compile(r"^[A-Za-z_][\w.:/-]{2,48}$")
+# Bulk config/settings loaders (Flask's Config, Django settings, configparser, dynaconf, …): the
+# keys they add come from an env var, a file or an object outside this repo, so a base that calls
+# one of these is populated the same way a dynamic-key write is — not a producer VibeCheck can see.
+_CONFIG_LOADER_FNS = {"update", "load", "loads", "populate", "read_dict", "read_file", "read_string"}
+# PEP 249 cursor methods (sqlite3, psycopg2, …) and their asyncpg equivalents: the row a variable
+# gets assigned from one of these is keyed by the SELECT's column list, which lives in a SQL string
+# VibeCheck does not parse — not a dict literal this repo ever writes.
+_DB_ROW_FNS = {"fetchone", "fetchall", "fetchmany", "fetchrow", "fetchval"}
 
 
 @dataclass
@@ -399,6 +407,14 @@ def _dict_keys(proj: Project, code: dict, c: Contracts) -> None:
             continue
         # dictionaries filled through a variable key (`cache[name] = ...`) can hold any key
         dynamic_bases = {s["base"].split(".")[-1] for s in ff.name_subs if s.get("mode") == "write"}
+        # ...or through a bulk loader call (`config.from_pyfile(...)`, `config.from_prefixed_env()`,
+        # `settings.update(...)`): the write happens, just not as a literal this file can trace.
+        dynamic_bases |= {(call["recv"] or "").split(".")[-1] for call in ff.calls
+                           if call["fn"].startswith("from_") or call["fn"] in _CONFIG_LOADER_FNS}
+        # ...or a row/record fetched off a DB-API cursor: its keys are the SQL SELECT's columns.
+        dynamic_bases |= {call["assigned"] for call in ff.calls
+                           if call.get("assigned") and call["fn"] in _DB_ROW_FNS}
+        dynamic_bases.discard("")
         literal_lines = defaultdict(set)
         for sv, ln in ff.strings:
             literal_lines[sv].add(ln)

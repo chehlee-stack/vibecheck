@@ -69,6 +69,28 @@ def _fingerprints(seq: List[str]) -> List[Tuple[int, int]]:
     return out
 
 
+def _dedup(pairs: List[dict]) -> List[dict]:
+    """Different winnowed fingerprints inside the same repeated block extend into runs that
+    nest inside one another — same start, growing end, once per fingerprint that survived
+    winnowing. Keep only the maximal run per file pair; a contained run adds no information
+    a human reading the larger one does not already have."""
+    by_key: Dict[Tuple[str, str], List[dict]] = defaultdict(list)
+    for d in pairs:
+        by_key[(d["a"], d["b"])].append(d)
+    out: List[dict] = []
+    for group in by_key.values():
+        group.sort(key=lambda d: -d["tokens"])
+        kept: List[dict] = []
+        for d in group:
+            la, lb = d["a_lines"], d["b_lines"]
+            if any(k["a_lines"][0] <= la[0] and la[1] <= k["a_lines"][1] and
+                   k["b_lines"][0] <= lb[0] and lb[1] <= k["b_lines"][1] for k in kept):
+                continue
+            kept.append(d)
+        out.extend(kept)
+    return out
+
+
 def detect(proj: Project, roles=("code", "test", "tool")) -> dict:
     files = [p for p, r in proj.roles.items() if r in roles and proj.files[p].norm and proj.files[p].lang not in ("godot-scene",)]
     toks: Dict[str, List[str]] = {p: [t for t, _ in proj.files[p].norm] for p in files}
@@ -121,6 +143,7 @@ def detect(proj: Project, roles=("code", "test", "tool")) -> dict:
                     continue
                 pairs.append({"a": pa, "a_lines": la, "b": pb, "b_lines": lb, "tokens": n})
 
+    pairs = _dedup(pairs)
     pairs.sort(key=lambda d: -d["tokens"])
     dup_lines: Dict[str, Set[int]] = defaultdict(set)
     for d in pairs:

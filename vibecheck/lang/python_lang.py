@@ -154,7 +154,14 @@ def parse(path: str, src: str) -> FileFacts:
                         args.append({"k": "dict", "v": dict_index.get(a)})
                     else:
                         args.append({"k": "other", "v": None})
-                ff.calls.append({"fn": fn, "recv": recv, "line": ln, "func": func_at_line.get(ln), "args": args})
+                p = parents.get(node)
+                assigned = None
+                if isinstance(p, ast.Assign) and len(p.targets) == 1 and isinstance(p.targets[0], ast.Name):
+                    assigned = p.targets[0].id
+                elif isinstance(p, ast.AnnAssign) and isinstance(p.target, ast.Name):
+                    assigned = p.target.id
+                ff.calls.append({"fn": fn, "recv": recv, "line": ln, "func": func_at_line.get(ln), "args": args,
+                                 "assigned": assigned})
         elif isinstance(node, ast.Subscript):
             sl = node.slice
             if isinstance(sl, ast.Index):  # Python < 3.9 AST shape
