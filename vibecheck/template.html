@@ -1,0 +1,1250 @@
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#f1f2ed; --sheet:#fbfbf8; --ink:#121416; --ink-2:#4d535a; --ink-3:#7a8187;
+  --rule:#d3d7cf; --grid:#e3e6df; --wash:#e8eae3; --mark:#f1df62;
+  --crit:#d03b3b; --serious:#ec835a; --warn:#fab219; --good:#0ca30c;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s0:#8f8d87;
+  --ring0:#0d366b; --ring1:#1c5cab; --ring2:#3987e5; --ring3:#86b6ef; --ringtext:#ffffff;
+  --area:rgba(42,120,214,.10);
+  --shadow:0 1px 0 rgba(18,20,22,.05),0 10px 28px -16px rgba(18,20,22,.22);
+  --f-sans:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1012; --sheet:#15181b; --ink:#eceeec; --ink-2:#b2b8bd; --ink-3:#7c838a;
+    --rule:#2a2f34; --grid:#1f2327; --wash:#1c2024; --mark:#5c531a;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s0:#6d6c67;
+    --ring0:#cde2fb; --ring1:#86b6ef; --ring2:#3987e5; --ring3:#1c5cab; --ringtext:#0e1012;
+    --area:rgba(57,135,229,.14);
+    --shadow:0 1px 0 rgba(0,0,0,.35),0 12px 32px -16px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1012; --sheet:#15181b; --ink:#eceeec; --ink-2:#b2b8bd; --ink-3:#7c838a;
+  --rule:#2a2f34; --grid:#1f2327; --wash:#1c2024; --mark:#5c531a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s0:#6d6c67;
+  --ring0:#cde2fb; --ring1:#86b6ef; --ring2:#3987e5; --ring3:#1c5cab; --ringtext:#0e1012;
+  --area:rgba(57,135,229,.14);
+  --shadow:0 1px 0 rgba(0,0,0,.35),0 12px 32px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 var(--f-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+code,.mono{font-family:var(--f-mono);font-size:.86em}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px}
+@media (max-width:520px){.wrap{padding-inline:16px}}
+
+/* masthead */
+.mast{border-bottom:1px solid var(--rule);background:var(--sheet)}
+.mast-in{display:grid;gap:18px;padding-block:24px 18px}
+.wordmark{font-weight:860;font-stretch:125%;letter-spacing:.02em;font-size:30px;line-height:1;text-transform:uppercase}
+.wordmark span{font-weight:340}
+.brand-sub{margin-top:8px;color:var(--ink-2);font-size:13px;letter-spacing:.01em}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 22px;margin:0;border-top:1px solid var(--rule);padding-top:14px}
+.meta div{min-width:0}
+.meta dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.meta dd{margin:2px 0 0;font-size:14px;overflow-wrap:anywhere}
+.wordmark{font-size:clamp(26px,4.4vw,38px)}
+
+/* section index */
+.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.toc .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.toc .wrap::-webkit-scrollbar{display:none}
+.toc a{flex:none;text-decoration:none;padding:11px 10px;font-size:13px;color:var(--ink-2);border-bottom:2px solid transparent;white-space:nowrap}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* sections */
+section.sec{padding-block:44px 6px;scroll-margin-top:44px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:18px;border-top:2px solid var(--ink);padding-top:12px}
+.sec-head h2{margin:0;font-size:24px;line-height:1.15;font-weight:780;font-stretch:112%;text-wrap:balance}
+.sec-head p{margin:0;color:var(--ink-2);max-width:62ch;font-size:14px}
+.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+h3{font-size:15px;margin:0 0 10px;font-weight:720;font-stretch:108%}
+.muted{color:var(--ink-3)}
+.note{color:var(--ink-2);font-size:13.5px;max-width:70ch}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* chips and flags: status never by colour alone */
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:2px;padding:1px 7px;font-size:11.5px;line-height:1.6;white-space:nowrap;letter-spacing:.02em;color:var(--ink)}
+.chip::before{content:"";width:8px;height:8px;border-radius:1px;background:var(--dot,var(--ink-3));flex:none}
+.sev-high{--dot:var(--crit)} .sev-medium{--dot:var(--serious)} .sev-low{--dot:var(--ink-3)} .sev-info{--dot:transparent}
+.sev-info.chip::before{border:1px solid var(--ink-3)}
+.tier-do-not-touch{--dot:var(--crit)} .tier-careful{--dot:var(--serious)} .tier-normal{--dot:var(--s0)} .tier-generated{--dot:transparent}
+.tier-generated.chip::before{border:1px dashed var(--ink-2)}
+.flag{font-family:var(--f-mono);font-weight:700;font-size:12px;display:inline-block;min-width:26px;text-align:center;border:1px solid var(--rule);border-radius:2px;padding:0 4px}
+.flag.hh{border-color:var(--crit);box-shadow:inset 3px 0 0 var(--crit)}
+.flag.h{border-color:var(--serious);box-shadow:inset 3px 0 0 var(--serious)}
+
+/* result */
+.result{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(0,2fr);gap:20px;align-items:start}
+@media (max-width:900px){.result{grid-template-columns:1fr}}
+.scorecard{background:var(--sheet);border:1px solid var(--rule);padding:20px 22px 18px;box-shadow:var(--shadow)}
+.sc-num{display:flex;align-items:baseline;gap:6px;margin:6px 0 4px}
+.sc-num b{font-size:88px;line-height:.9;font-weight:820;font-stretch:118%;letter-spacing:-.02em}
+.sc-num small{font-size:18px;color:var(--ink-3)}
+.stamp{display:inline-block;margin:10px 0 12px;border:2px solid var(--ink);padding:4px 10px 3px;font-weight:800;font-stretch:125%;text-transform:uppercase;font-size:12.5px;letter-spacing:.06em;transform:rotate(-1.2deg)}
+.sc-read{margin:0 0 16px;color:var(--ink-2);font-size:14px}
+.tierscale{position:relative;margin-top:6px}
+.tierscale .bands{display:grid;grid-template-columns:25fr 20fr 20fr 35fr;height:10px;border:1px solid var(--rule)}
+.tierscale .bands i{border-right:1px solid var(--rule);background:var(--wash)}
+.tierscale .bands i:nth-child(2){background:color-mix(in srgb,var(--wash) 70%,var(--ink-3))}
+.tierscale .bands i:nth-child(3){background:color-mix(in srgb,var(--wash) 45%,var(--ink-3))}
+.tierscale .bands i:nth-child(4){background:color-mix(in srgb,var(--wash) 20%,var(--ink-3));border-right:0}
+.tierscale .pin{position:absolute;top:-5px;width:2px;height:20px;background:var(--ink)}
+.tierscale .labels{display:grid;grid-template-columns:25fr 20fr 20fr 35fr;font-size:10.5px;color:var(--ink-3);margin-top:5px;line-height:1.25}
+.tierscale .labels span{padding-right:4px}
+
+.panel{width:100%;border-collapse:collapse;background:var(--sheet);border:1px solid var(--rule);font-size:14px}
+.panel th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--ink)}
+.panel td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:middle}
+.panel tr.cat{cursor:pointer}
+.panel tr.cat:hover td{background:var(--wash)}
+.panel .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:650;width:64px}
+.panel .ref{color:var(--ink-3);font-size:12px;white-space:nowrap}
+.panel .catname{font-weight:620}
+.panel .caret{color:var(--ink-3);font-size:12px;margin-right:6px;display:inline-block;transition:transform .15s}
+.panel tr.cat[aria-expanded="true"] .caret{transform:rotate(90deg)}
+.panel tr.comps td{background:var(--paper);padding:4px 12px 12px}
+.bar{position:relative;height:14px;min-width:120px;background:linear-gradient(to right,var(--grid) 0 25%,transparent 25% 100%);border:1px solid var(--rule)}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--ink-3)}
+.comp{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) 60px 120px;gap:10px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--grid);font-size:13px}
+.comp:last-child{border-bottom:0}
+.comp .cv{color:var(--ink-2)}
+.comp .cs{text-align:right;font-variant-numeric:tabular-nums}
+.comp .minibar{height:6px;background:var(--grid);position:relative}
+.comp .minibar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink-2)}
+@media (max-width:640px){.comp{grid-template-columns:1fr 60px}.comp .cv{grid-column:1/-1}.comp .minibar{display:none}}
+.credit{font-size:12.5px;color:var(--ink-2);padding-top:6px}
+
+.attn{margin-top:22px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.attn{grid-template-columns:1fr}}
+.attn ol{margin:0;padding:0;list-style:none;counter-reset:a;border-top:1px solid var(--rule)}
+.attn li{counter-increment:a;display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 10px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.attn li::before{content:counter(a);font-family:var(--f-mono);font-size:12px;color:var(--ink-3);padding-top:2px}
+.attn .t{font-weight:640;text-wrap:balance}
+.attn .d{grid-column:2;color:var(--ink-2);font-size:13.5px}
+.attn .e{grid-column:2;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);overflow-wrap:anywhere}
+.caught{background:var(--sheet);border:1px solid var(--rule);padding:16px 18px;box-shadow:var(--shadow)}
+.caught h3{font-stretch:112%}
+.caught ul{list-style:none;margin:0;padding:0}
+.caught li{padding:10px 0;border-top:1px solid var(--grid)}
+.caught li:first-child{border-top:0}
+.caught .when{font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+
+/* findings */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
+.fbtn{border:1px solid var(--rule);background:var(--sheet);padding:4px 10px;border-radius:2px;cursor:pointer;font-size:13px}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.fbtn .n{font-variant-numeric:tabular-nums;opacity:.7;margin-left:4px}
+.flist{border-top:1px solid var(--ink)}
+details.fd{border-bottom:1px solid var(--rule);background:transparent}
+details.fd>summary{list-style:none;display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:11px 4px;cursor:pointer}
+details.fd>summary::-webkit-details-marker{display:none}
+details.fd>summary:hover{background:var(--wash)}
+details.fd[open]>summary{background:var(--sheet)}
+.fd-title{font-weight:560;text-wrap:pretty}
+.fd-cat{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.fd-body{padding:4px 4px 16px 100px;background:var(--sheet)}
+.fd-body p{margin:0 0 10px;max-width:78ch;color:var(--ink-2)}
+@media (max-width:640px){details.fd>summary{grid-template-columns:1fr}.fd-cat{display:none}.fd-body{padding-left:4px}}
+.ev{border:1px solid var(--rule);background:var(--paper)}
+.ev-line{display:grid;grid-template-columns:minmax(120px,max-content) minmax(0,1fr);gap:12px;padding:5px 10px;border-top:1px solid var(--grid);font-family:var(--f-mono);font-size:12px}
+.ev-line:first-child{border-top:0}
+.ev-loc{color:var(--ink-2);white-space:nowrap}
+.ev-code{white-space:pre;overflow-x:auto;color:var(--ink)}
+@media (max-width:640px){.ev-line{grid-template-columns:1fr}}
+.more{margin-top:10px}
+
+/* risk table */
+table.risk{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+table.risk th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--ink)}
+table.risk td{padding:10px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.risk td.rk{font-family:var(--f-mono);color:var(--ink-3);width:34px}
+table.risk td.file{font-family:var(--f-mono);font-size:12.5px;overflow-wrap:anywhere;width:30%}
+table.risk .sbar{display:flex;align-items:center;gap:8px;min-width:130px}
+table.risk .sbar .bar{flex:1;min-width:70px;height:10px;background:var(--grid)}
+table.risk .sbar span{font-variant-numeric:tabular-nums;font-weight:650;width:30px;text-align:right}
+table.risk ul{margin:0;padding-left:16px;color:var(--ink-2)}
+table.risk li{margin:2px 0}
+tr.dnt td{background:color-mix(in srgb,var(--crit) 5%,transparent)}
+.controllers{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ctl{border:1px solid var(--rule);background:var(--sheet);padding:8px 10px;font-size:13px}
+.ctl b{font-family:var(--f-mono);font-weight:600;font-size:12.5px}
+
+/* MRI */
+.mri{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+@media (max-width:980px){.mri{grid-template-columns:1fr}}
+.mri-tools{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:10px}
+.kind{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);background:var(--sheet);padding:3px 9px;cursor:pointer;font-size:12.5px;border-radius:2px}
+.kind[aria-pressed="false"]{opacity:.45}
+.kind svg{flex:none}
+.mri-tools input[type=search]{border:1px solid var(--rule);background:var(--sheet);padding:4px 8px;min-width:0;width:200px;border-radius:2px}
+.graphbox{position:relative;background:var(--sheet);border:1px solid var(--rule);height:clamp(420px,68vh,680px);overflow:hidden;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;background-position:-1px -1px}
+.graphbox svg{width:100%;height:100%;display:block;touch-action:none}
+.graph-fallback{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-3);padding:20px;text-align:center}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.node-dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:1.5px solid var(--sheet);box-shadow:0 0 0 1px var(--rule)}
+.detail{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px;font-size:13.5px;max-height:clamp(420px,68vh,680px);overflow:auto}
+.detail h3{font-family:var(--f-mono);font-size:13px;font-weight:600;overflow-wrap:anywhere;margin-bottom:6px}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.kv div{border-top:1px solid var(--grid);padding-top:4px}
+.kv b{display:block;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.kv span{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.rel{list-style:none;margin:4px 0 12px;padding:0}
+.rel li{padding:5px 0;border-top:1px dashed var(--grid);font-size:12.5px}
+.rel li button{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:12px;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+.rel li button:focus-visible{outline:2px solid var(--ink)}
+.rel .why{display:block;color:var(--ink-2)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);padding:6px 8px;font-size:12px;max-width:280px;z-index:5;border-radius:2px;line-height:1.35}
+.tip b{font-family:var(--f-mono);font-weight:600}
+
+/* blast radius */
+.blast-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;background:var(--sheet);border:2px solid var(--ink);padding:10px;box-shadow:var(--shadow)}
+.blast-bar label{grid-column:1/-1;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.blast-bar input{border:0;border-bottom:1px solid var(--rule);background:transparent;padding:6px 2px;font-size:22px;font-weight:560;font-stretch:104%;min-width:0;outline:none}
+.blast-bar input:focus{border-bottom-color:var(--ink)}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:8px 16px;cursor:pointer;font-weight:650;border-radius:2px;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink)}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;align-items:center}
+.presets button{border:1px dashed var(--ink-3);background:transparent;padding:3px 10px;cursor:pointer;font-size:13px;border-radius:2px}
+.presets button:hover{border-style:solid;background:var(--sheet)}
+.verdict{font-size:19px;line-height:1.45;font-weight:520;max-width:72ch;text-wrap:pretty;margin:0 0 16px}
+.stop{border:2px solid var(--crit);background:var(--sheet);padding:14px 16px 10px;margin-bottom:18px;position:relative}
+.stop .stamp{border-color:var(--crit);color:var(--ink);margin:0 0 8px;transform:rotate(-1.5deg)}
+.stop blockquote{margin:8px 0;padding:0 0 0 12px;border-left:3px solid var(--rule);color:var(--ink)}
+.stop cite{display:block;font-style:normal;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+.blast-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1100px){.blast-grid{grid-template-columns:1fr}.ringbox{max-width:680px;margin-inline:auto;width:100%}}
+.ringbox{background:var(--sheet);border:1px solid var(--rule);padding:8px}
+.ringbox svg{width:100%;height:auto;display:block;max-width:100%}
+.lists h3{margin-top:4px}
+.ilist{list-style:none;margin:0 0 18px;padding:0;border-top:1px solid var(--rule)}
+.ilist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--rule)}
+.ilist .p{font-family:var(--f-mono);font-size:12.5px;overflow-wrap:anywhere}
+.ilist .w{grid-column:1/-1;color:var(--ink-2);font-size:12.5px}
+.kindtag{font-size:11px;letter-spacing:.04em;border:1px solid var(--rule);padding:0 6px;border-radius:2px;white-space:nowrap;align-self:start;display:inline-flex;align-items:center;gap:5px}
+.kindtag i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.packs{display:grid;gap:10px;margin-top:6px}
+details.box{border:1px solid var(--rule);background:var(--sheet)}
+details.box>summary{cursor:pointer;padding:10px 14px;font-weight:650;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.box>summary::-webkit-details-marker{display:none}
+details.box>summary::after{content:"+";color:var(--ink-3);font-family:var(--f-mono)}
+details.box[open]>summary::after{content:"−"}
+details.box .inner{padding:0 14px 14px}
+details.box .inner li{margin:4px 0;color:var(--ink-2)}
+details.box blockquote{margin:8px 0;border-left:3px solid var(--rule);padding-left:10px}
+details.box cite{display:block;font-family:var(--f-mono);font-style:normal;font-size:11.5px;color:var(--ink-3)}
+.packbox{border:1px solid var(--ink);background:var(--sheet);margin-top:18px}
+.packhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.packhead b{font-stretch:112%}
+.packhead .muted{font-size:12.5px}
+pre.pack{margin:0;padding:14px;max-height:520px;overflow:auto;font-family:var(--f-mono);font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* history + backtest charts */
+.chart{background:var(--sheet);border:1px solid var(--rule);padding:12px 12px 6px;position:relative}
+.chart svg{display:block;width:100%;height:auto}
+.axis text,.chart text{fill:var(--ink-3);font-family:var(--f-sans);font-size:11px}
+.chart .lbl{fill:var(--ink-2)}
+.chart .ink{fill:var(--ink)}
+table.plain{width:100%;border-collapse:collapse;font-size:13px}
+table.plain th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:7px 8px;border-bottom:1px solid var(--ink)}
+table.plain td{padding:7px 8px;border-bottom:1px solid var(--grid);vertical-align:top}
+table.plain td.n{text-align:right;font-variant-numeric:tabular-nums}
+table.plain .mono{font-size:12px}
+.bt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.bt{grid-template-columns:1fr}}
+.kpis{display:flex;flex-wrap:wrap;gap:10px 28px;margin:6px 0 16px}
+.kpis div b{display:block;font-size:30px;font-weight:780;font-stretch:115%;line-height:1.05}
+.kpis div span{font-size:12.5px;color:var(--ink-2)}
+.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media (max-width:860px){.method{grid-template-columns:1fr}}
+.method p,.method li{color:var(--ink-2);max-width:66ch}
+pre.cli{background:var(--sheet);border:1px solid var(--rule);padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:12.5px;line-height:1.6;margin:8px 0 0}
+footer{margin-top:48px;border-top:1px solid var(--rule);padding-block:18px 36px;color:var(--ink-3);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script id="vc-data" type="application/json">/*{{DATA}}*/</script>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <div>
+      <div class="wordmark">Vibe<span>Check</span></div>
+      <div class="brand-sub">Codebase audit for projects built with AI agents</div>
+    </div>
+    <dl class="meta" id="meta"></dl>
+  </div>
+</header>
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#result">Result</a>
+    <a href="#findings">Findings</a>
+    <a href="#touch">Do Not Let AI Touch This</a>
+    <a href="#mri">Repo MRI</a>
+    <a href="#blast">Blast Radius</a>
+    <a href="#history">History</a>
+    <a href="#backtest">Backtest</a>
+    <a href="#method">Method</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="sec" id="result">
+    <div class="sec-head">
+      <h2>Result</h2>
+      <p>Measured, not asked: parsed from the code at this commit and its git history. Every number below traces to files and lines.</p>
+    </div>
+    <div class="result">
+      <div class="scorecard" id="scorecard"></div>
+      <div>
+        <div class="scroll-x"><table class="panel" id="panel"></table></div>
+        <div class="note" style="margin-top:8px">Select a row to see what it measured. Reference range for a repository an agent can take on unsupervised: under 25.</div>
+      </div>
+    </div>
+    <div class="attn">
+      <div>
+        <h3>What needs attention, in order</h3>
+        <ol id="attention"></ol>
+      </div>
+      <div class="caught" id="caught" hidden></div>
+    </div>
+  </section>
+
+  <section class="sec" id="findings">
+    <div class="sec-head">
+      <h2>Findings</h2>
+      <p>Each claim carries the lines that prove it. High means something fails; medium means an agent is likely to break it; low and info are plumbing to know about.</p>
+    </div>
+    <div class="filters" id="ffilters"></div>
+    <div class="flist" id="flist"></div>
+  </section>
+
+  <section class="sec" id="touch">
+    <div class="sec-head">
+      <h2>Do Not Let AI Touch This</h2>
+      <p>Files ranked by how much goes wrong, and how quietly, when an agent edits them plausibly but wrongly. Saved player data outranks everything.</p>
+    </div>
+    <div class="scroll-x"><table class="risk" id="risk"></table></div>
+    <button class="btn ghost more" id="riskMore" type="button">Show all files</button>
+    <div id="controllers"></div>
+  </section>
+
+  <section class="sec" id="mri">
+    <div class="sec-head">
+      <h2>Repo MRI</h2>
+      <p>Every file, placed by what it touches. Blue lines are code references, orange lines are string keys routed between files, green dotted lines are rare shared strings, grey dashed lines are files that change together in history.</p>
+    </div>
+    <div class="mri">
+      <div>
+        <div class="mri-tools" id="mriTools"></div>
+        <div class="graphbox" id="graphbox"><div class="graph-fallback" id="graphFallback">Drawing the graph…</div></div>
+        <div class="legend" id="mriLegend"></div>
+      </div>
+      <aside class="detail" id="detail" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section class="sec" id="blast">
+    <div class="sec-head">
+      <h2>Blast Radius</h2>
+      <p>Describe a change. VibeCheck finds where it lands, what it will probably break, which documented rules it runs into, and writes the brief to hand a coding agent.</p>
+    </div>
+    <form class="blast-bar" id="blastForm">
+      <label for="blastInput">The change you want an agent to make</label>
+      <input id="blastInput" name="blastInput" autocomplete="off" spellcheck="false" placeholder="add multiplayer">
+      <button class="btn" type="submit">Check the blast radius</button>
+    </form>
+    <div class="presets" id="presets"><span class="muted">Try:</span></div>
+    <div id="blastOut"></div>
+  </section>
+
+  <section class="sec" id="history">
+    <div class="sec-head">
+      <h2>History</h2>
+      <p>The score at every commit, each scanned as it was. Red rings mark commits with a high finding: something that did not run or would not ship.</p>
+    </div>
+    <div id="historyBody"></div>
+  </section>
+
+  <section class="sec" id="backtest">
+    <div class="sec-head">
+      <h2>Backtest</h2>
+      <p>Does the blast radius predict what really changes? Each commit is replayed from its parent with only older history, and the prediction is scored against the files the commit actually touched.</p>
+    </div>
+    <div id="backtestBody"></div>
+  </section>
+
+  <section class="sec" id="method">
+    <div class="sec-head">
+      <h2>Method</h2>
+      <p>What is measured, how the score is built, and what this cannot see.</p>
+    </div>
+    <div class="method" id="methodBody"></div>
+  </section>
+  <footer id="foot"></footer>
+</main>
+
+<script>
+(function () {
+"use strict";
+const D = JSON.parse(document.getElementById("vc-data").textContent);
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const codeify = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const base = p => String(p).split("/").pop();
+const fmtDate = ts => ts ? new Date(ts * 1000).toISOString().slice(0, 10) : "";
+const SEV = ["high", "medium", "low", "info"];
+const CAT = {"agent-risk": "Agent-edit risk", "coupling": "Coupling", "duplication": "Duplication", "size": "God objects", "prompt-archaeology": "Prompt archaeology"};
+const TIERLBL = {"do-not-touch": "Do not touch", "careful": "Careful", "normal": "Normal", "generated": "Generated"};
+function h(tag, attrs, html) { const e = document.createElement(tag); if (attrs) for (const k in attrs) { if (attrs[k] != null) e.setAttribute(k, attrs[k]); } if (html != null) e.innerHTML = html; return e; }
+function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+/* ------------------------------------------------------------------ masthead */
+(function meta() {
+  const r = D.repo, s = D.stats;
+  const agents = Object.entries(s.ai_agents || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => k.replace(/\s*<.*$/, "") + " " + v).join(", ");
+  const rows = [
+    ["Repository", esc(r.name)],
+    ["Commit", `<span class="mono">${esc(r.short)}</span>${r.branch ? " · " + esc(r.branch) : ""}`],
+    ["Scanned", fmtDate(r.scanned_at)],
+    ["Code", `${s.code_files} files · ${s.loc.toLocaleString()} lines`],
+    ["History", s.commits ? `${s.commits} commits, ${fmtDate(s.first_ts)} → ${fmtDate(s.last_ts)}` : "no history"],
+    ["Written with", s.commits ? `${s.ai_commits} of ${s.commits} commits co-authored by AI${agents ? " (" + esc(agents) + ")" : ""}` : "unknown"],
+  ];
+  $("#meta").innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+})();
+
+/* ------------------------------------------------------------------ result */
+(function result() {
+  const sc = D.score;
+  const total = sc.total;
+  const readings = {
+    handover: "Low enough to hand to an agent with ordinary review.",
+    pack: "An agent can work here, but only with a brief: the files, the invariants, and when to stop.",
+    supervised: "Agent changes need a person reviewing each diff against the risks below.",
+    stabilize: "Pay down the worst debt before handing this repository to an agent.",
+  };
+  $("#scorecard").innerHTML = `
+    <div class="eyebrow">Vibe Debt Score</div>
+    <div class="sc-num"><b>${Math.round(total)}</b><small>/ 100</small></div>
+    <div class="stamp">${esc(sc.tier_label)}</div>
+    <p class="sc-read">${readings[sc.tier] || ""} Lower is better.</p>
+    <div class="tierscale" aria-label="Score scale">
+      <div class="bands"><i></i><i></i><i></i><i></i></div>
+      <div class="pin" style="left:calc(${Math.min(99.5, total)}% - 1px)"></div>
+      <div class="labels"><span>Hand over</span><span>With a pack</span><span>Supervised</span><span>Stabilize first</span></div>
+    </div>
+    <div class="note" style="margin-top:12px;font-size:12px">Scoring ${esc(sc.version)} · ${sc.kloc}k lines of game code.</div>`;
+
+  const panel = $("#panel");
+  let html = `<thead><tr><th>Measure</th><th class="num">Result</th><th>0 — 100</th><th>Flag</th><th class="ref">Weight</th></tr></thead><tbody>`;
+  Object.entries(sc.categories).forEach(([key, c], i) => {
+    const flag = c.score >= 65 ? '<span class="flag hh" title="High: above 65">HH</span>' : c.score >= 45 ? '<span class="flag h" title="Elevated: 45 to 65">H</span>' : c.score >= 25 ? '<span class="flag" title="Above the 25 reference">↑</span>' : '<span class="flag muted" title="Within reference">—</span>';
+    html += `<tr class="cat" tabindex="0" role="button" aria-expanded="false" data-i="${i}">
+      <td><span class="caret">▸</span><span class="catname">${esc(c.label)}</span></td>
+      <td class="num">${c.score.toFixed(0)}</td>
+      <td><div class="bar"><i style="width:${c.score}%"></i><b style="left:25%"></b><b style="left:45%"></b><b style="left:65%"></b></div></td>
+      <td>${flag}</td><td class="ref">${Math.round(sc.weights[key] * 100)}%</td></tr>
+      <tr class="comps" data-for="${i}" hidden><td colspan="5">${c.components.map(x => `
+        <div class="comp"><span>${esc(x.name)}</span><span class="cv">${esc(x.value)}${x.range ? ` <span class="muted">· full debt at ${esc(x.range[1])}${x.range[0] !== 0 ? ", none at " + esc(x.range[0]) : ""}</span>` : ""}</span>
+        <span class="cs">${x.score == null ? "n/a" : x.score.toFixed(0)}</span><span class="minibar"><i style="width:${x.score || 0}%"></i></span></div>`).join("")}
+        ${c.credit ? `<div class="credit">−${c.credit} credit: ${esc(c.credit_note)}</div>` : ""}</td></tr>`;
+  });
+  panel.innerHTML = html + "</tbody>";
+  panel.querySelectorAll("tr.cat").forEach(tr => {
+    const toggle = () => { const row = panel.querySelector(`tr.comps[data-for="${tr.dataset.i}"]`); row.hidden = !row.hidden; tr.setAttribute("aria-expanded", String(!row.hidden)); };
+    tr.addEventListener("click", toggle);
+    tr.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  });
+
+  // attention: the most severe finding of each kind, and the two riskiest files
+  const seen = new Set(), picks = [];
+  for (const f of D.findings) {
+    if (f.severity === "info" || seen.has(f.id)) continue;
+    seen.add(f.id); picks.push(f);
+    if (picks.length >= 5) break;
+  }
+  const ol = $("#attention");
+  ol.innerHTML = picks.map(f => {
+    const ev = f.evidence.slice(0, 2).map(e => `${esc(e.file)}${e.line ? ":" + e.line : ""}`).join(" · ");
+    return `<li><span class="t"><span class="chip sev-${f.severity}">${f.severity}</span> ${codeify(f.title)}</span>
+      <span class="d">${codeify(f.detail)}</span><span class="e">${ev}</span></li>`;
+  }).join("");
+  const dnt = D.risk.filter(r => r.tier === "do-not-touch").slice(0, 3);
+  if (dnt.length) ol.insertAdjacentHTML("beforeend", `<li><span class="t"><span class="chip tier-do-not-touch">risk</span> Keep agents out of ${dnt.map(r => `<code>${esc(base(r.path))}</code>`).join(", ")} without a person in the loop</span>
+    <span class="d">${esc(dnt[0].reasons.slice(0, 2).join("; "))}.</span></li>`);
+})();
+
+/* ------------------------------------------------------------------ caught in history */
+function caughtEvents() {
+  const tl = D.timeline;
+  if (!tl || !tl.length) return [];
+  const events = [];
+  for (let i = 0; i < tl.length; i++) {
+    const prev = new Set(i ? tl[i - 1].high.map(x => x.id + "|" + x.title) : []);
+    const fresh = tl[i].high.filter(x => !prev.has(x.id + "|" + x.title));
+    if (!fresh.length) continue;
+    const groups = {};
+    fresh.forEach(x => (groups[x.id] = groups[x.id] || []).push(x));
+    for (const id in groups) {
+      const items = groups[id];
+      let j = i + 1;
+      while (j < tl.length && tl[j].high.some(x => x.id === id && items.some(y => y.title === x.title))) j++;
+      events.push({id, items, from: tl[i], last: tl[j - 1], fixed: j < tl.length ? tl[j] : null, span: j - i});
+    }
+  }
+  return events;
+}
+(function caught() {
+  const ev = caughtEvents().filter(e => e.fixed);
+  if (!ev.length) return;
+  const box = $("#caught");
+  box.hidden = false;
+  const label = e => e.items.length === 1 ? codeify(e.items[0].title) : `${e.items.length} findings like ${codeify(e.items[0].title)}`;
+  box.innerHTML = `<h3>Would have been caught before the fix</h3>
+    <p class="note" style="margin:0 0 8px">Scanning each past commit as it stood, these high findings appear, then disappear in a later commit that fixed them.</p>
+    <ul>${ev.slice(0, 4).map(e => `<li><div>${label(e)}</div>
+      <div class="when">${esc(e.from.sha)} → fixed ${e.span > 1 ? e.span + " commits later " : ""}in ${esc(e.fixed.sha)}: “${esc(e.fixed.subject)}”</div></li>`).join("")}</ul>`;
+})();
+
+/* ------------------------------------------------------------------ findings */
+(function findings() {
+  const counts = {all: D.findings.length};
+  SEV.forEach(s => counts[s] = D.findings.filter(f => f.severity === s).length);
+  const state = {sev: "all", limit: 30};
+  const filt = $("#ffilters");
+  filt.innerHTML = ["all"].concat(SEV).filter(s => s === "all" || counts[s]).map(s =>
+    `<button class="fbtn" type="button" data-sev="${s}" aria-pressed="${s === "all"}">${s === "all" ? "All" : s[0].toUpperCase() + s.slice(1)}<span class="n">${counts[s]}</span></button>`).join("");
+  function draw() {
+    const list = D.findings.filter(f => state.sev === "all" || f.severity === state.sev);
+    $("#flist").innerHTML = list.slice(0, state.limit).map(f => `
+      <details class="fd"><summary><span><span class="chip sev-${f.severity}">${f.severity}</span></span><span class="fd-title">${codeify(f.title)}</span><span class="fd-cat">${esc(CAT[f.category] || f.category)}</span></summary>
+      <div class="fd-body"><p>${codeify(f.detail)}</p>${f.evidence.length ? `<div class="ev">${f.evidence.map(e => `<div class="ev-line"><span class="ev-loc">${esc(e.file)}${e.line ? ":" + e.line : ""}</span><span class="ev-code">${esc(e.text || "")}</span></div>`).join("")}</div>` : ""}</div></details>`).join("") +
+      (list.length > state.limit ? `<button class="btn ghost more" type="button" id="fmore">Show ${list.length - state.limit} more</button>` : "");
+    const more = $("#fmore");
+    if (more) more.addEventListener("click", () => { state.limit = 1e9; draw(); });
+  }
+  filt.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state.sev = b.dataset.sev; state.limit = 30;
+    filt.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    draw();
+  });
+  draw();
+})();
+
+/* ------------------------------------------------------------------ do not touch */
+(function risk() {
+  let showAll = false;
+  function draw() {
+    const rows = showAll ? D.risk : D.risk.slice(0, 15);
+    $("#risk").innerHTML = `<thead><tr><th>#</th><th>File</th><th>Regression risk</th><th>Tier</th><th>Why</th></tr></thead><tbody>` +
+      rows.map((r, i) => `<tr class="${r.tier === "do-not-touch" ? "dnt" : ""}"><td class="rk">${i + 1}</td><td class="file">${esc(r.path)}</td>
+        <td><div class="sbar"><div class="bar"><i style="width:${r.score}%"></i><b style="left:45%"></b><b style="left:62%"></b></div><span>${Math.round(r.score)}</span></div></td>
+        <td><span class="chip tier-${r.tier}">${TIERLBL[r.tier] || r.tier}</span></td>
+        <td><ul>${r.reasons.slice(0, 4).map(x => `<li>${codeify(x)}</li>`).join("") || "<li>nothing stands out</li>"}</ul></td></tr>`).join("") + "</tbody>";
+    $("#riskMore").textContent = showAll ? "Show the top 15" : `Show all ${D.risk.length} files`;
+  }
+  $("#riskMore").addEventListener("click", () => { showAll = !showAll; draw(); });
+  draw();
+  if (D.secret_controllers && D.secret_controllers.length) {
+    $("#controllers").innerHTML = `<h3 style="margin-top:22px">Small files with outsized reach</h3>
+      <p class="note" style="margin:0">Below-median size, top-fifth reach. They look like helpers in a file tree; a signature change here lands everywhere.</p>
+      <div class="controllers">${D.secret_controllers.map(s => `<div class="ctl"><b>${esc(base(s.path))}</b><div class="muted">${s.loc} lines · ${s.fan_in} files depend on it</div></div>`).join("")}</div>`;
+  }
+})();
+
+/* ------------------------------------------------------------------ repo MRI */
+const KINDS = [
+  {k: "static", label: "Code references", color: "--s1", dash: null},
+  {k: "contract", label: "Routed string keys", color: "--s2", dash: null},
+  {k: "string", label: "Shared rare strings", color: "--s3", dash: "2 3"},
+  {k: "cochange", label: "Change together", color: "--s0", dash: "6 4"},
+];
+const MRI = {selected: null, on: {static: true, contract: true, string: false, cochange: true}};
+function tierColor(n) {
+  if (n.tier === "do-not-touch") return css("--crit");
+  if (n.tier === "careful") return css("--serious");
+  if (n.tier === "generated") return css("--sheet");
+  if (n.role === "test" || n.role === "tool") return css("--sheet");
+  if (n.role === "resource") return css("--ink-3");
+  return css("--s0");
+}
+function edgeKind(e) { const ks = Object.keys(e.kinds); for (const k of ["static", "contract", "cochange", "string"]) if (ks.includes(k)) return k; return ks[0]; }
+function detailFor(id) {
+  const m = D.metrics[id] || {}, r = D.risk.find(x => x.path === id);
+  const out = D.graph.edges.filter(e => e.s === id), inn = D.graph.edges.filter(e => e.t === id);
+  const rel = (list, key) => list.sort((a, b) => b.w - a.w).slice(0, 12).map(e => `<li><button type="button" data-go="${esc(e[key])}">${esc(base(e[key]))}</button><span class="why">${esc(e.why.join("; "))}</span></li>`).join("");
+  return `<div class="eyebrow">${esc(m.role || "")}${m.autoload ? " · autoload " + esc(m.autoload) : ""}${m.class_name ? " · class " + esc(m.class_name) : ""}</div>
+    <h3>${esc(id)}</h3>
+    ${r ? `<span class="chip tier-${r.tier}">${TIERLBL[r.tier]} · ${Math.round(r.score)}</span>` : ""}
+    ${m.generated_by ? `<p class="note">Generated by <code>${esc(m.generated_by)}</code>.</p>` : ""}
+    ${m.doc ? `<p class="note">${esc(m.doc)}</p>` : ""}
+    <div class="kv"><div><b>${m.loc || 0}</b><span>lines</span></div><div><b>${m.fan_in || 0}</b><span>dependents</span></div><div><b>${m.reach == null ? "–" : m.reach}</b><span>reach</span></div>
+      <div><b>${m.funcs || 0}</b><span>functions</span></div><div><b>${m.longest_func || 0}</b><span>longest fn</span></div><div><b>${m.churn_commits || 0}</b><span>commits</span></div></div>
+    ${r && r.reasons.length ? `<ul class="rel">${r.reasons.map(x => `<li>${codeify(x)}</li>`).join("")}</ul>` : ""}
+    ${inn.length ? `<div class="eyebrow">Depended on by ${inn.length}</div><ul class="rel">${rel(inn, "s")}</ul>` : ""}
+    ${out.length ? `<div class="eyebrow">Depends on ${out.length}</div><ul class="rel">${rel(out, "t")}</ul>` : ""}`;
+}
+function selectNode(id) {
+  MRI.selected = id;
+  const d = $("#detail");
+  d.innerHTML = id ? detailFor(id) : `<div class="eyebrow">Select a file</div><p class="note">Click any circle to see its measurements, what depends on it and why. Circle size is lines of code; colour is regression risk.</p>`;
+  d.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { selectNode(b.dataset.go); if (MRI.focus) MRI.focus(b.dataset.go); }));
+  if (MRI.highlight) MRI.highlight(id);
+}
+(function mri() {
+  const tools = $("#mriTools");
+  const count = k => D.graph.edges.filter(e => edgeKind(e) === k).length;
+  tools.innerHTML = KINDS.map(K => `<button class="kind" type="button" data-k="${K.k}" aria-pressed="${MRI.on[K.k]}"><svg width="22" height="8" aria-hidden="true"><line x1="1" y1="4" x2="21" y2="4" stroke="${css(K.color)}" stroke-width="2" ${K.dash ? `stroke-dasharray="${K.dash}"` : ""}/></svg>${K.label} <span class="muted">${count(K.k)}</span></button>`).join("") +
+    `<input type="search" id="mriSearch" placeholder="Find a file" aria-label="Find a file">`;
+  $("#mriLegend").innerHTML = `<span><i class="node-dot" style="background:${css("--crit")}"></i>Do not touch</span><span><i class="node-dot" style="background:${css("--serious")}"></i>Careful</span>
+    <span><i class="node-dot" style="background:${css("--s0")}"></i>Normal</span><span><i class="node-dot" style="background:${css("--sheet")};box-shadow:0 0 0 1px ${css("--ink-2")}"></i>Generated, tests and tools (outlined)</span>
+    <span class="muted">Scroll or pinch to zoom · drag to pan</span>`;
+  selectNode(null);
+  if (typeof d3 === "undefined") { $("#graphFallback").textContent = "The graph needs d3 from cdnjs, which did not load. Every other section works without it."; return; }
+  const box = $("#graphbox");
+  const W = 1000, H = 720;
+  const nodes = D.graph.nodes.map(n => Object.assign({}, n));
+  const byId = new Map(nodes.map(n => [n.id, n]));
+  const dirs = [...new Set(nodes.map(n => n.dir))].sort();
+  const anchors = {};
+  dirs.forEach((d, i) => { const a = (i / dirs.length) * Math.PI * 2 - Math.PI / 2; anchors[d] = [W / 2 + Math.cos(a) * W * 0.3, H / 2 + Math.sin(a) * H * 0.31]; });
+  const links = D.graph.edges.filter(e => byId.has(e.s) && byId.has(e.t)).map(e => ({source: e.s, target: e.t, w: e.w, kind: edgeKind(e), e}));
+  const radius = n => 3.5 + Math.sqrt(n.loc || 1) * 0.55;
+  const sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id).distance(l => l.kind === "static" ? 46 : 80).strength(l => (l.kind === "static" || l.kind === "contract" ? 0.35 : 0.06) * Math.min(1, l.w)))
+    .force("charge", d3.forceManyBody().strength(-95))
+    .force("collide", d3.forceCollide(d => radius(d) + 3))
+    .force("x", d3.forceX(d => anchors[d.dir][0]).strength(0.07))
+    .force("y", d3.forceY(d => anchors[d.dir][1]).strength(0.07))
+    .stop();
+  for (let i = 0; i < 360; i++) sim.tick();
+  const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y);
+  const minX = Math.min(...xs) - 40, maxX = Math.max(...xs) + 40, minY = Math.min(...ys) - 30, maxY = Math.max(...ys) + 30;
+  box.querySelector(".graph-fallback").remove();
+  const svg = d3.select(box).append("svg").attr("viewBox", `${minX} ${minY} ${maxX - minX} ${maxY - minY}`).attr("role", "img").attr("aria-label", "Dependency graph of the repository");
+  const g = svg.append("g");
+  svg.call(d3.zoom().scaleExtent([0.5, 6]).on("zoom", ev => g.attr("transform", ev.transform)));
+  const dirLabels = g.append("g");
+  dirs.forEach(d => {
+    const members = nodes.filter(n => n.dir === d);
+    if (members.length < 2) return;
+    const cx = d3.mean(members, n => n.x), top = d3.min(members, n => n.y) - 14;
+    dirLabels.append("text").attr("x", cx).attr("y", top).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", css("--ink-3")).attr("font-family", "var(--f-mono)").text(d + "/");
+  });
+  const linkSel = g.append("g").attr("fill", "none").selectAll("line").data(links).join("line")
+    .attr("x1", l => l.source.x).attr("y1", l => l.source.y).attr("x2", l => l.target.x).attr("y2", l => l.target.y)
+    .attr("stroke", l => css(KINDS.find(K => K.k === l.kind).color))
+    .attr("stroke-width", l => l.kind === "static" || l.kind === "contract" ? 0.6 + l.w * 0.9 : 1)
+    .attr("stroke-dasharray", l => KINDS.find(K => K.k === l.kind).dash)
+    .attr("stroke-opacity", l => 0.16 + Math.min(0.5, l.w * 0.4));
+  const nodeSel = g.append("g").selectAll("circle").data(nodes).join("circle")
+    .attr("cx", n => n.x).attr("cy", n => n.y).attr("r", radius)
+    .attr("fill", tierColor)
+    .attr("stroke", n => (n.role === "test" || n.role === "tool" || n.tier === "generated") ? css("--ink-2") : css("--sheet"))
+    .attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", n => n.tier === "generated" ? "2 2" : null)
+    .style("cursor", "pointer");
+  const labelIds = new Set(D.risk.slice(0, 10).map(r => r.path).concat((D.secret_controllers || []).map(s => s.path)));
+  const labelSel = g.append("g").selectAll("text").data(nodes.filter(n => labelIds.has(n.id))).join("text")
+    .attr("x", n => n.x + radius(n) + 3).attr("y", n => n.y + 3.5).attr("font-size", 10.5).attr("fill", css("--ink"))
+    .attr("paint-order", "stroke").attr("stroke", css("--sheet")).attr("stroke-width", 3).text(n => base(n.id));
+  const tip = h("div", {class: "tip", hidden: ""});
+  box.appendChild(tip);
+  nodeSel.on("mouseenter", (ev, n) => {
+    const r = D.risk.find(x => x.path === n.id);
+    tip.innerHTML = `<b>${esc(base(n.id))}</b><br>${n.loc} lines · ${n.fan_in} dependents${r ? " · risk " + Math.round(r.score) : ""}`;
+    tip.hidden = false;
+    const rect = box.getBoundingClientRect();
+    tip.style.left = Math.min(rect.width - 200, ev.clientX - rect.left + 12) + "px";
+    tip.style.top = (ev.clientY - rect.top + 12) + "px";
+  }).on("mouseleave", () => { tip.hidden = true; }).on("click", (ev, n) => selectNode(n.id));
+  function applyKinds() { linkSel.attr("display", l => MRI.on[l.kind] ? null : "none"); }
+  MRI.highlight = id => {
+    if (!id) { nodeSel.attr("opacity", 1); linkSel.attr("stroke-opacity", l => 0.16 + Math.min(0.5, l.w * 0.4)); labelSel.attr("opacity", 1); return; }
+    const nb = new Set([id]);
+    links.forEach(l => { if (!MRI.on[l.kind]) return; if (l.source.id === id) nb.add(l.target.id); if (l.target.id === id) nb.add(l.source.id); });
+    nodeSel.attr("opacity", n => nb.has(n.id) ? 1 : 0.18);
+    labelSel.attr("opacity", n => nb.has(n.id) ? 1 : 0.2);
+    linkSel.attr("stroke-opacity", l => (l.source.id === id || l.target.id === id) ? 0.9 : 0.04);
+  };
+  MRI.focus = id => {};
+  tools.addEventListener("click", e => {
+    const b = e.target.closest("button.kind"); if (!b) return;
+    MRI.on[b.dataset.k] = !MRI.on[b.dataset.k];
+    b.setAttribute("aria-pressed", String(MRI.on[b.dataset.k]));
+    applyKinds(); MRI.highlight(MRI.selected);
+  });
+  $("#mriSearch").addEventListener("input", e => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { selectNode(null); return; }
+    const hit = nodes.find(n => base(n.id).toLowerCase().startsWith(q)) || nodes.find(n => n.id.toLowerCase().includes(q));
+    if (hit) selectNode(hit.id);
+  });
+  applyKinds();
+  const top = D.risk[0];
+  if (top) selectNode(top.path);
+})();
+
+/* ------------------------------------------------------------------ blast radius (a port of blast.py) */
+const Blast = (function () {
+  const BC = D.blast_config, STOP = new Set(BC.stop), NEG = new Set(BC.neg_words), GENERIC = new Set(BC.generic);
+  const CONSTRAINT = new RegExp(BC.constraint_re, "i");
+  const SPLIT = /[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|\d+/g;
+  const roles = {}; D.graph.nodes.forEach(n => roles[n.id] = n.role);
+  const riskBy = {}; D.risk.forEach(r => riskBy[r.path] = r);
+  const edgeMap = new Map(D.graph.edges.map(e => [e.s + " " + e.t, e]));
+  function stem(w) {
+    w = w.toLowerCase();
+    if (w.length > 4 && w.endsWith("ies")) return w.slice(0, -3) + "y";
+    if (w.length > 5 && /(sses|shes|ches|xes)$/.test(w)) return w.slice(0, -2);
+    if (w.length > 3 && w.endsWith("s") && !/(ss|us|is)$/.test(w)) return w.slice(0, -1);
+    if (w.length > 5 && w.endsWith("ing")) return w.slice(0, -3);
+    if (w.length > 4 && w.endsWith("ed")) return w.slice(0, -2);
+    return w;
+  }
+  function words(text) {
+    const out = [];
+    for (const chunk of String(text).split(/[^A-Za-z0-9]+/)) {
+      for (const part of (chunk.match(SPLIT) || [])) { const p = part.toLowerCase(); if (p.length >= 2 && !/^\d+$/.test(p)) out.push(p); }
+    }
+    return out;
+  }
+  function parse(text) {
+    const low = text.toLowerCase();
+    let intent = "change";
+    for (const [name, pat] of BC.intents) { if (new RegExp(pat).test(low)) { intent = name; break; } }
+    const raw = words(text).filter(w => !STOP.has(w));
+    const terms = {}, concepts = [];
+    for (const w of raw) {
+      const s = stem(w);
+      terms[s] = Math.max(terms[s] || 0, 1.0);
+      const syn = BC.concepts[w] || BC.concepts[s];
+      if (syn) { concepts.push(w); for (const x of syn.split(" ")) { const sx = stem(x); if (!(sx in terms)) terms[sx] = 0.45; } }
+    }
+    return {text, intent, raw: raw.map(stem), terms, concepts};
+  }
+  function bm25(index, query) {
+    const k1 = 1.2, b = 0.6, paths = Object.keys(index), n = paths.length || 1, df = {}, lens = {};
+    for (const p of paths) { let L = 0; for (const t in index[p]) { L += index[p][t]; df[t] = (df[t] || 0) + 1; } lens[p] = L; }
+    const avg = paths.length ? paths.reduce((a, p) => a + lens[p], 0) / n : 1;
+    const out = {};
+    for (const p of paths) {
+      const tf = index[p]; let s = 0; const hits = [];
+      for (const t in query) {
+        const f = tf[t]; if (!f) continue;
+        const idf = Math.log(1 + (n - df[t] + 0.5) / (df[t] + 0.5));
+        s += query[t] * idf * f * (k1 + 1) / (f + k1 * (1 - b + b * lens[p] / avg));
+        hits.push(t);
+      }
+      if (s > 0) out[p] = [s, hits];
+    }
+    return out;
+  }
+  function conflicts(sentence, q) {
+    if (q.intent !== "add" && q.intent !== "change") return false;
+    const toks = (sentence.match(/[A-Za-z]+/g) || []).map(w => w.toLowerCase());
+    const stems = toks.map(stem), negs = [], hits = [];
+    toks.forEach((t, i) => { if (NEG.has(t)) negs.push(i); });
+    toks.forEach((t, i) => { if (t === "false" && i > 0) negs.push(i); });
+    const floor = q.novel ? 0.45 : 1.0;
+    stems.forEach((s, i) => { if ((q.terms[s] || 0) >= floor && !GENERIC.has(s)) hits.push(i); });
+    return negs.some(i => hits.some(j => (j - i > 0 && j - i <= 6) || (toks[i] === "false" && i - j > 0 && i - j <= 4)));
+  }
+  function constraints(q, seeds) {
+    const seedNames = new Set();
+    seeds.forEach(s => { seedNames.add(base(s)); const cn = (D.metrics[s] || {}).class_name; if (cn) seedNames.add(cn); });
+    const found = [];
+    for (const d of D.docs_index) {
+      const ws = new Set(words(d.text).map(stem));
+      let overlap = 0; ws.forEach(t => { if (t in q.terms) overlap += q.terms[t]; });
+      const mentions = [...seedNames].filter(nm => d.text.includes(nm));
+      if (overlap <= 0 && !mentions.length) continue;
+      if (!CONSTRAINT.test(d.text)) continue;
+      found.push({doc: d.doc, line: d.line, text: d.text, score: (overlap + 0.8 * mentions.length) * (1 + d.weight), conflict: conflicts(d.text, q) && !mentions.length, weight: d.weight});
+    }
+    found.sort((a, b) => (b.conflict - a.conflict) || (b.score - a.score));
+    const out = [], seen = new Set();
+    for (const c of found) { const k = c.text.slice(0, 80); if (seen.has(k)) continue; seen.add(k); out.push(c); if (out.length >= 8) break; }
+    const net = ["network", "internet", "online", "server", "multiplayer", "socket", "http", "sync", "cloud", "analytics", "login", "account"];
+    if (net.some(t => t in q.terms) && q.intent !== "remove") {
+      const p = (D.godot.presets || []).find(p => String(p.internet).toLowerCase() === "false");
+      if (p) out.unshift({doc: "export_presets.cfg", line: 0, text: `Export preset "${p.name}" ships with permissions/internet=false.`, score: 99, conflict: true, weight: 3});
+    }
+    return out;
+  }
+  function relevantMembers(path, q) {
+    const rel = new Set();
+    (D.symbols[path] || []).forEach(([name, st]) => { const ts = new Set(words(name).map(stem).concat(st)); for (const t of ts) { if ((q.terms[t] || 0) >= 0.45) { rel.add(name); break; } } });
+    return rel;
+  }
+  function impactNeighbors(seeds, q, hubs) {
+    const nb = new Map();
+    const passive = new Set(D.graph.nodes.filter(n => n.role === "test" || n.role === "tool").map(n => n.id));
+    const relevant = {}; hubs.forEach(s => relevant[s] = relevantMembers(s, q));
+    for (const e of D.graph.edges) {
+      if (passive.has(e.s)) continue;
+      let w = e.w;
+      if (hubs.has(e.t) && e.skind && e.kinds.static) {
+        const members = e.members || [];
+        const share = members.length ? members.filter(m => relevant[e.t].has(m)).length / members.length : 0;
+        w = e.kinds.static * (0.2 + 0.8 * Math.min(1, 2 * share)) + (e.w - e.kinds.static);
+      }
+      if (!nb.has(e.t)) nb.set(e.t, []);
+      nb.get(e.t).push([e.s, w, e]);
+    }
+    return nb;
+  }
+  function ppr(nb, seeds) {
+    const alpha = 0.55, p0 = new Map(seeds.map(s => [s, 1 / seeds.length]));
+    let r = new Map(p0);
+    for (let it = 0; it < 40; it++) {
+      const nxt = new Map();
+      for (const [u, mass] of r) {
+        const out = nb.get(u) || []; let tot = 0; out.forEach(o => tot += o[1]);
+        if (tot <= 0) continue;
+        for (const [v, w] of out) nxt.set(v, (nxt.get(v) || 0) + alpha * mass * w / Math.max(tot, 1));
+      }
+      for (const s of seeds) nxt.set(s, (nxt.get(s) || 0) + (1 - alpha) * p0.get(s));
+      r = nxt;
+    }
+    return r;
+  }
+  function paths(nb, seeds) {
+    const dist = new Map(seeds.map(s => [s, 0])), prev = new Map(), heap = seeds.map(s => [0, s]);
+    const less = (a, b) => a[0] < b[0] || (a[0] === b[0] && a[1] < b[1]);
+    const push = x => { heap.push(x); let i = heap.length - 1; while (i > 0) { const p = (i - 1) >> 1; if (less(heap[i], heap[p])) { [heap[i], heap[p]] = [heap[p], heap[i]]; i = p; } else break; } };
+    const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let i = 0; for (;;) { const l = 2 * i + 1, r = l + 1; let m = i; if (l < heap.length && less(heap[l], heap[m])) m = l; if (r < heap.length && less(heap[r], heap[m])) m = r; if (m === i) break; [heap[i], heap[m]] = [heap[m], heap[i]]; i = m; } } return top; };
+    heap.sort((a, b) => less(a, b) ? -1 : 1);
+    while (heap.length) {
+      const [d, u] = pop();
+      if (d > (dist.has(u) ? dist.get(u) : 1e9)) continue;
+      for (const [v, w, e] of (nb.get(u) || [])) {
+        const nd = d + 0.35 - Math.log(Math.min(1, Math.max(w, 1e-3)));
+        if (nd < (dist.has(v) ? dist.get(v) : 1e9)) { dist.set(v, nd); prev.set(v, [u, e]); push([nd, v]); }
+      }
+    }
+    const out = new Map();
+    for (const v of prev.keys()) { const chain = []; let cur = v; while (prev.has(cur) && chain.length < 6) { const [u, e] = prev.get(cur); chain.push([u, cur, e]); cur = u; } out.set(v, chain.reverse()); }
+    return out;
+  }
+  function run(request) {
+    const q = parse(request);
+    const indexAll = D.index;
+    const idx = {}; for (const p in indexAll) if (["code", "generated", "resource"].includes(roles[p])) idx[p] = indexAll[p];
+    const ranking = bm25(idx, q.terms);
+    const ordered = Object.entries(ranking).sort((a, b) => b[1][0] - a[1][0]);
+    const known = new Set(); for (const p in indexAll) for (const t in indexAll[p]) known.add(t);
+    const missing = q.raw.filter(t => !known.has(t));
+    const top = ordered.length ? ordered[0][1][0] : 0;
+    const seeds = ordered.filter(([p, v]) => v[0] >= 0.4 * top).slice(0, 5).map(([p]) => p);
+    const novel = q.raw.length > 0 && missing.length === q.raw.length;
+    q.novel = novel;
+    const cons = constraints(q, seeds);
+    if (!seeds.length) return {request, intent: q.intent, missing_terms: missing, novel: true, seeds: [], impacted: [], context: [], tests: [], constraints: cons, invariants: [], rules: [], stop: [], summary: "Nothing in the code matches this request.", pack: ""};
+    const hubs = new Set(seeds.filter(s => ((D.metrics[s] || {}).fan_in || 0) >= 6));
+    const relevant = {}; seeds.forEach(s => relevant[s] = relevantMembers(s, q));
+    const nb = impactNeighbors(seeds, q, hubs);
+    const r = ppr(nb, seeds), chains = paths(nb, seeds);
+    const seedSet = new Set(seeds);
+    const cands = [...r.entries()].filter(([p]) => !seedSet.has(p) && ["code", "generated", "resource"].includes(roles[p])).sort((a, b) => b[1] - a[1]);
+    const best = cands.length ? cands[0][1] : 0;
+    const impacted = [];
+    for (const [p, v] of cands.slice(0, 12)) {
+      if (v < 0.12 * best) break;
+      const chain = chains.get(p) || [];
+      const kinds = new Set(chain.length ? Object.keys(chain[chain.length - 1][2].kinds) : []);
+      const direct = [];
+      for (const s of seeds) {
+        const ge = edgeMap.get(p + " " + s);
+        if (!ge || !(ge.kinds.static || ge.kinds.contract)) continue;
+        const used = ge.skind ? ge.members : [];
+        if (hubs.has(s) && !ge.kinds.contract && !used.some(m => relevant[s].has(m))) continue;
+        if (ge.skind && ["preload", "load", "ext_resource", "scene-script"].includes(ge.skind) && !used.length && !["remove", "rename", "replace"].includes(q.intent)) continue;
+        direct.push([s, ge, hubs.has(s) ? used.filter(m => relevant[s].has(m)).sort() : used.slice().sort()]);
+      }
+      if (roles[p] === "resource" && !direct.length) continue;
+      let kind, why;
+      if (direct.length) {
+        kind = "breaks";
+        const [s, ge, used] = direct.reduce((a, b) => b[1].w > a[1].w ? b : a);
+        why = [{from: s, to: p, because: used.length ? [`uses ${used.slice(0, 5).join(", ")} of ${base(s)}`] : ge.why.slice(0, 2)}];
+      } else {
+        kind = (kinds.has("static") || kinds.has("contract")) ? "ripples" : kinds.has("cochange") ? "changes-with" : "shares-strings";
+        why = chain.map(([a, b, e]) => ({from: a, to: b, because: e.why.slice(0, 2)}));
+      }
+      const rr = riskBy[p] || {};
+      impacted.push({path: p, score: v, kind, tier: rr.tier, risk: rr.score, why});
+    }
+    const order = {"breaks": 0, "ripples": 1, "changes-with": 2, "shares-strings": 3};
+    impacted.sort((a, b) => (order[a.kind] - order[b.kind]) || (b.score - a.score));
+    const impactedSet = new Set(impacted.map(i => i.path));
+    const context = [], ctxSeen = new Set();
+    D.graph.edges.filter(e => seedSet.has(e.s) && !seedSet.has(e.t) && e.kinds.static && ["code", "generated"].includes(roles[e.t])).sort((a, b) => b.w - a.w)
+      .forEach(e => { if (ctxSeen.has(e.t) || impactedSet.has(e.t)) return; ctxSeen.add(e.t); context.push({path: e.t, because: e.why.slice(0, 2)}); });
+    const area = new Set([...seeds, ...impactedSet]);
+    const testHits = new Map();
+    D.graph.edges.forEach(e => { if (roles[e.s] === "test" && area.has(e.t) && (e.kinds.static || e.kinds.contract)) testHits.set(e.s, (testHits.get(e.s) || 0) + (seedSet.has(e.t) ? 2 : 1)); });
+    const tests = [...testHits.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([p, n]) => ({path: p, hits: n}));
+    let inv = [];
+    seeds.concat(impacted.slice(0, 6).map(i => i.path)).forEach(p => {
+      const m = D.metrics[p] || {};
+      if (m.generated_by) inv.push({file: p, line: 1, text: `Generated by \`${m.generated_by}\`: change the generator and re-run it; never hand-edit.`});
+      if (m.persists) inv.push({file: p, line: 1, text: "Writes persistent data: existing saves must still load after the change."});
+    });
+    seeds.forEach(p => {
+      let users = new Map();
+      D.graph.edges.forEach(e => { if (e.t === p && e.skind && ["code", "generated"].includes(roles[e.s])) (e.members || []).forEach(mn => { if (!users.has(mn)) users.set(mn, new Set()); users.get(mn).add(e.s); }); });
+      const m = D.metrics[p] || {};
+      const name = m.class_name || m.autoload || base(p);
+      let entries = [...users.entries()];
+      const byUse = (a, b) => (b[1].size - a[1].size) || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+      if (hubs.has(p)) { const rel = entries.filter(([mn]) => relevant[p].has(mn)); entries = rel.length ? rel : entries.sort(byUse).slice(0, 2); }
+      entries.sort(byUse).slice(0, 6).forEach(([mn, fs]) => {
+        if (fs.size < 2) return;
+        const sym = (D.symbols[p] || []).find(s => s[0] === mn);
+        inv.push({file: p, line: sym ? sym[2] : 1, text: `\`${name}.${mn}\` is used by ${fs.size} files (${[...fs].map(base).sort().slice(0, 4).join(", ")}): keep its signature and meaning.`});
+      });
+    });
+    seeds.forEach(p => (D.contracts.invariants[p] || []).slice(0, 5).forEach(x => { if (["routing", "signal", "scene", "meta"].includes(x.kind)) inv.push({file: p, line: x.line, text: x.text}); }));
+    if ((D.godot.export_excludes || []).length) inv.push({file: "export_presets.cfg", line: 0, text: `The export leaves out ${D.godot.export_excludes.slice(0, 4).join(", ")}: shipped code must not preload or name anything there.`});
+    const invSeen = new Set(); inv = inv.filter(x => invSeen.has(x.text) ? false : invSeen.add(x.text)).slice(0, 16);
+    const names = new Set(); area.forEach(p => { names.add(base(p)); const cn = (D.metrics[p] || {}).class_name; if (cn) names.add(cn); });
+    const nameRe = n => new RegExp("\\b" + n.split(".")[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b");
+    let rules = [];
+    D.table_rules.forEach(t => { const hit = [...names].filter(n => nameRe(n).test(t.text)); if (hit.length) rules.push({doc: t.doc, line: t.line, text: t.text, files: hit.slice(0, 3), weight: t.weight}); });
+    D.docs_index.forEach(d => { if (d.weight < 2 || d.text.length >= 400) return; const hit = [...names].filter(n => nameRe(n).test(d.text)); if (hit.length && CONSTRAINT.test(d.text)) rules.push({doc: d.doc, line: d.line, text: d.text, files: hit.slice(0, 3), weight: d.weight}); });
+    const seedNames = new Set(); seeds.forEach(p => { seedNames.add(base(p).replace(/\.[^.]+$/, "")); const cn = (D.metrics[p] || {}).class_name; if (cn) seedNames.add(cn); });
+    const ruleScore = x => 3 * [...seedNames].filter(n => nameRe(n).test(x.text)).length + x.files.length + x.weight - 0.004 * x.text.length;
+    rules.sort((a, b) => ruleScore(b) - ruleScore(a));
+    const ruleSeen = new Set(); rules = rules.filter(x => ruleSeen.has(x.text) ? false : ruleSeen.add(x.text)).slice(0, 8);
+    const stop = [...area].sort((a, b) => ((riskBy[b] || {}).score || 0) - ((riskBy[a] || {}).score || 0)).filter(p => ["do-not-touch", "generated"].includes((riskBy[p] || {}).tier)).slice(0, 6).map(p => ({path: p, reasons: riskBy[p].reasons.slice(0, 3)}));
+    const med = D.stats.median_commit_lines || 0;
+    const budget = {lines: D.stats.commits >= 5 ? Math.floor(Math.min(800, Math.max(200, 2 * med))) : 400, files: seeds.length + impacted.filter(i => i.kind === "breaks").length + 2};
+    const res = {request, intent: q.intent, missing_terms: missing, novel, seeds: seeds.map(p => ({path: p, matched: (ranking[p] || [0, []])[1].slice(0, 6), tier: (riskBy[p] || {}).tier})),
+      impacted, context: context.slice(0, 6), tests, constraints: cons, invariants: inv, rules, stop, budget};
+    res.summary = summary(res);
+    res.pack = pack(res);
+    return res;
+  }
+  function summary(b) {
+    const parts = [], conflictsN = b.constraints.filter(c => c.conflict).length;
+    if (conflictsN) parts.push(`This request runs into ${conflictsN} documented constraint${conflictsN === 1 ? "" : "s"}; settle ${conflictsN === 1 ? "it" : "them"} before any code is written.`);
+    if (b.novel) parts.push(`Nothing in the code is called ${b.missing_terms.slice(0, 2).map(m => "“" + m + "”").join(" or ")} yet, so the radius is measured from the closest existing ideas.`);
+    const br = b.impacted.filter(i => i.kind === "breaks").length, rp = b.impacted.filter(i => i.kind === "ripples").length, other = b.impacted.length - br - rp;
+    parts.push(`The change lands in ${b.seeds.slice(0, 3).map(s => base(s.path)).join(", ")} and reaches ${b.impacted.length} more file${b.impacted.length === 1 ? "" : "s"}: ${br} depend${br === 1 ? "s" : ""} on the seeds directly, ${rp} through another file, ${other} only by history or shared strings.`);
+    if (b.stop.length) parts.push(`${b.stop.length} of them ${b.stop.length === 1 ? "is" : "are"} on the do-not-touch list.`);
+    if (b.impacted.some(i => (D.metrics[i.path] || {}).persists) || b.seeds.some(s => (D.metrics[s.path] || {}).persists)) parts.push("Saved data is inside the radius.");
+    return parts.join(" ");
+  }
+  function pack(b) {
+    const L = [];
+    L.push(`# Task: ${b.request}`, "", `You are working in \`${D.repo.name}\` at commit \`${D.repo.short}\`. VibeCheck wrote this brief from a static and historical analysis of the repository. Every claim names a file; check a claim against the code before you rely on it.`, "");
+    const conf = b.constraints.filter(c => c.conflict);
+    if (conf.length) {
+      L.push("## 0. Stop: the request contradicts the project's own rules", "");
+      conf.slice(0, 4).forEach(c => { L.push(`> ${c.text}  \n> — \`${c.line ? c.doc + ":" + c.line : c.doc}\``, ""); });
+      L.push("Do not write code until the person who asked confirms how this request squares with the lines above.", "");
+    }
+    if (b.novel) L.push(`> Nothing in the codebase is named ${b.missing_terms.slice(0, 3).map(m => "“" + m + "”").join(" or ")} yet. The files below are where it would connect, found through related ideas.`, "");
+    L.push("## 1. Where the change goes", "");
+    b.seeds.forEach(s => L.push(`- \`${s.path}\`${["do-not-touch", "generated"].includes(s.tier) ? " — **" + s.tier + "**" : ""}  (matched: ${s.matched.slice(0, 5).join(", ") || "given"})`));
+    L.push("", "## 2. What will probably break", "");
+    const labels = {"breaks": "depends on it directly", "ripples": "reached through another file", "changes-with": "changes with it in history", "shares-strings": "shares string keys with it"};
+    b.impacted.forEach(i => {
+      let why = "";
+      if (i.kind === "breaks" && i.why.length) why = " — " + i.why[0].because.join("; ");
+      else if (i.why.length) why = ` — via ${[i.why[0].from].concat(i.why.map(w => w.to)).map(base).join(" → ")}: ${i.why[i.why.length - 1].because.join("; ")}`;
+      L.push(`- \`${i.path}\` (${labels[i.kind]})${why}${i.tier === "do-not-touch" ? " **[do-not-touch]**" : ""}`);
+    });
+    if (!b.impacted.length) L.push("- Nothing beyond the files above: they have no dependents VibeCheck can see.");
+    L.push("");
+    if (b.context.length) { L.push("## 3. Read before editing (change only if the task requires it)", ""); b.context.forEach(c => L.push(`- \`${c.path}\` — ${c.because.join("; ")}`)); L.push(""); }
+    if (b.invariants.length) { L.push("## 4. Invariants to preserve", ""); b.invariants.forEach(x => L.push(`- ${x.text} (\`${x.line ? x.file + ":" + x.line : x.file}\`)`)); L.push(""); }
+    const nonconf = b.constraints.filter(c => !c.conflict);
+    if (b.rules.length || nonconf.length) {
+      L.push("## 5. Rules the docs already state", "");
+      const seen = new Set();
+      b.rules.concat(nonconf).slice(0, 10).forEach(x => { if (seen.has(x.text)) return; seen.add(x.text); L.push(`> ${x.text}  \n> — \`${x.doc}:${x.line}\``, ""); });
+    }
+    if (b.stop.length) { L.push("## 6. Do not modify without stopping to ask", ""); b.stop.forEach(s => L.push(`- \`${s.path}\` — ${s.reasons.join("; ")}`)); L.push(""); }
+    L.push("## 7. Verify", "");
+    (D.commands || []).slice(0, 2).forEach(c => L.push(`From \`${c.doc}\` (${c.heading}):`, "", "```bash", c.text, "```", ""));
+    L.push(b.tests.length ? `Tests that exercise this area: ${b.tests.map(t => "`" + t.path + "`").join(", ")}.` : "No test file references these files. Before changing behaviour, write a test that pins what the code does now.", "");
+    L.push("## 8. Stop or roll back when", "");
+    const allowed = b.seeds.map(s => s.path).concat(b.impacted.filter(i => i.kind === "breaks").map(i => i.path));
+    L.push(`- The change needs an edit outside these files, beyond updating a call site: ${allowed.slice(0, 10).map(p => "`" + base(p) + "`").join(", ")}.`);
+    L.push(`- The diff grows past about ${b.budget.lines} changed lines or ${b.budget.files} files. That is the change getting away from the request.`);
+    if (b.stop.length) L.push("- A file from section 6 needs more than a call-site change.");
+    if (b.invariants.some(x => x.text.startsWith("Writes persistent data"))) L.push("- Saved data would change shape. Stop and ask; if approved, follow the project's migration rule.");
+    L.push("- A string key, signal or payload field from section 4 is renamed in some of its sites but not all of them.", "- A check in section 7 fails and the only way to make it pass is to change what the test expects.", "");
+    L.push("## 9. Report back with", "", "- The files you changed, and why each one needed to change.", "- Any invariant from section 4 you had to touch, and how its other sites were updated.", "- The commands you ran from section 7 and their results.", "- Anything listed in section 2 that you did not check.", "");
+    return L.join("\n");
+  }
+  return {run};
+})();
+
+const RINGCOL = {seed: "--ring0", breaks: "--ring1", ripples: "--ring2", "changes-with": "--ring3", "shares-strings": "--ring3"};
+function ringMap(b) {
+  const S = 560, C = S / 2;
+  const rings = {seed: 58, breaks: 150, ripples: 210, other: 256};
+  const place = (items, r, offset) => items.map((it, i) => { const a = offset + (i / Math.max(1, items.length)) * Math.PI * 2 - Math.PI / 2; return Object.assign({}, it, {x: C + Math.cos(a) * r, y: C + Math.sin(a) * r, a}); });
+  const seeds = b.seeds.length === 1 ? [{path: b.seeds[0].path, kind: "seed", tier: b.seeds[0].tier, x: C, y: C, a: 0}] : place(b.seeds.map(s => ({path: s.path, kind: "seed", tier: s.tier})), rings.seed, 0);
+  const br = place(b.impacted.filter(i => i.kind === "breaks"), rings.breaks, 0.15);
+  const rp = place(b.impacted.filter(i => i.kind === "ripples"), rings.ripples, 0.4);
+  const ot = place(b.impacted.filter(i => i.kind === "changes-with" || i.kind === "shares-strings"), rings.other, 0.7);
+  const all = seeds.concat(br, rp, ot);
+  const pos = new Map(all.map(n => [n.path, n]));
+  let s = `<svg viewBox="-146 -8 ${S + 292} ${S + 16}" role="img" aria-label="Blast radius rings">`;
+  [["breaks", rings.breaks, "depends directly"], ["ripples", rings.ripples, "through another file"], ["other", rings.other, "history · shared strings"]].forEach(([k, r, label]) => {
+    s += `<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="${css("--rule")}" stroke-dasharray="3 4"/>`;
+    s += `<text x="${C}" y="${C - r - 6}" text-anchor="middle" font-size="11" fill="${css("--ink-3")}">${label}</text>`;
+  });
+  b.impacted.forEach(i => {
+    const to = pos.get(i.path); if (!to) return;
+    const fromPath = i.why.length ? i.why[i.why.length - 1].from : null;
+    const from = pos.get(fromPath) || seeds[0];
+    s += `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" stroke="${css("--ink-3")}" stroke-opacity=".55" stroke-width="1.2"/>`;
+  });
+  // labels: keep each side's labels from landing on top of one another
+  const sides = {L: [], R: []};
+  all.forEach(n => {
+    const right = (n.kind === "seed" && b.seeds.length === 1) ? true : Math.cos(n.a) >= 0;
+    n.right = right;
+    n.r = n.kind === "seed" ? 12 : 9;
+    sides[right ? "R" : "L"].push(n);
+  });
+  ["L", "R"].forEach(k => {
+    const list = sides[k].sort((p, q) => p.y - q.y);
+    let lastY = -1e9;
+    list.forEach(n => { let y = n.y + 4; if (y - lastY < 16) y = lastY + 16; n.ly = y; lastY = y; });
+  });
+  all.forEach(n => {
+    const col = css(RINGCOL[n.kind]);
+    const dnt = n.tier === "do-not-touch" || n.tier === "generated";
+    const lx = n.x + (n.right ? n.r + 8 : -(n.r + 8));
+    s += `<g><title>${esc(n.path)}${n.tier ? " · " + esc(n.tier) : ""}</title>`;
+    if (Math.abs(n.ly - (n.y + 4)) > 7) s += `<line x1="${n.x + (n.right ? n.r + 2 : -(n.r + 2))}" y1="${n.y}" x2="${lx}" y2="${n.ly - 4}" stroke="${css("--rule")}" stroke-width="1"/>`;
+    if (dnt) s += `<circle cx="${n.x}" cy="${n.y}" r="${n.r + 4.5}" fill="none" stroke="${css("--crit")}" stroke-width="2" ${n.tier === "generated" ? 'stroke-dasharray="3 2"' : ""}/>`;
+    s += `<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${col}" stroke="${css("--sheet")}" stroke-width="2"/>`;
+    s += `<text x="${lx}" y="${n.ly}" text-anchor="${n.right ? "start" : "end"}" font-size="${n.kind === "seed" ? 14 : 12.5}" font-weight="${n.kind === "seed" ? 700 : 500}" fill="${css("--ink")}" paint-order="stroke" stroke="${css("--sheet")}" stroke-width="3.5">${esc(base(n.path).replace(/\.(gd|py|tscn|ts|js|cs|gdshader)$/, ""))}</text></g>`;
+  });
+  return s + "</svg>";
+}
+
+function renderBlast(b, origin) {
+  const out = $("#blastOut");
+  const conf = b.constraints.filter(c => c.conflict);
+  const kindLbl = {"breaks": "breaks", "ripples": "ripples", "changes-with": "history", "shares-strings": "strings"};
+  out.innerHTML = `
+    <p class="verdict">${esc(b.summary)}</p>
+    ${conf.length ? `<div class="stop"><div class="stamp">Stop · contradicts the project's rules</div>${conf.slice(0, 4).map(c => `<blockquote>${codeify(c.text)}<cite>${esc(c.line ? c.doc + ":" + c.line : c.doc)}</cite></blockquote>`).join("")}</div>` : ""}
+    ${b.seeds.length ? `<div class="blast-grid">
+      <div class="ringbox">${ringMap(b)}
+        <div class="legend" style="padding:0 6px 6px">${[["seed", "where it lands"], ["breaks", "breaks"], ["ripples", "ripples"], ["changes-with", "history or strings"]].map(([k, l]) => `<span><i class="node-dot" style="background:${css(RINGCOL[k])}"></i>${l}</span>`).join("")}<span><i class="node-dot" style="background:transparent;box-shadow:0 0 0 2px ${css("--crit")}"></i>do not touch</span></div>
+      </div>
+      <div class="lists">
+        <h3>Where the change goes</h3>
+        <ul class="ilist">${b.seeds.map(s => `<li><span class="p">${esc(s.path)}</span>${s.tier === "do-not-touch" || s.tier === "generated" ? `<span class="chip tier-${s.tier}">${TIERLBL[s.tier]}</span>` : "<span></span>"}<span class="w">matched ${esc((s.matched || []).slice(0, 5).join(", ") || "—")}</span></li>`).join("")}</ul>
+        <h3>What will probably break</h3>
+        <ul class="ilist">${b.impacted.map(i => `<li><span class="p">${esc(i.path)}</span><span class="kindtag"><i style="background:${css(RINGCOL[i.kind])}"></i>${kindLbl[i.kind]}</span><span class="w">${esc(i.kind === "breaks" ? i.why[0].because.join("; ") : i.why.length ? "via " + [i.why[0].from].concat(i.why.map(w => w.to)).map(base).join(" → ") + ": " + i.why[i.why.length - 1].because.join("; ") : "")}</span></li>`).join("") || "<li><span class='w'>No dependents found.</span></li>"}</ul>
+      </div>
+    </div>
+    <div class="packs">
+      ${b.invariants.length ? `<details class="box"><summary>Invariants to preserve (${b.invariants.length})</summary><div class="inner"><ul>${b.invariants.map(x => `<li>${codeify(x.text)} <span class="mono muted">${esc(x.line ? x.file + ":" + x.line : x.file)}</span></li>`).join("")}</ul></div></details>` : ""}
+      ${b.rules.length ? `<details class="box"><summary>Rules the docs already state (${b.rules.length})</summary><div class="inner">${b.rules.map(x => `<blockquote>${codeify(x.text)}<cite>${esc(x.doc)}:${x.line}</cite></blockquote>`).join("")}</div></details>` : ""}
+      ${b.stop.length ? `<details class="box"><summary>Stop and ask before touching (${b.stop.length})</summary><div class="inner"><ul>${b.stop.map(x => `<li><code>${esc(x.path)}</code> — ${codeify(x.reasons.join("; "))}</li>`).join("")}</ul></div></details>` : ""}
+    </div>
+    <div class="packbox">
+      <div class="packhead"><div><b>Agent Handoff Pack</b> <span class="muted">${origin === "cli" ? "precomputed by the CLI" : "computed in your browser from the scan"}</span></div>
+        <button class="btn" type="button" id="copyPack">Copy for Claude or Codex</button></div>
+      <pre class="pack" id="packText" tabindex="0">${esc(b.pack)}</pre>
+    </div>` : ""}`;
+  const copy = $("#copyPack");
+  if (copy) copy.addEventListener("click", () => {
+    const text = b.pack;
+    const done = msg => { copy.textContent = msg; setTimeout(() => copy.textContent = "Copy for Claude or Codex", 2200); };
+    const select = () => { const r = document.createRange(); r.selectNodeContents($("#packText")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected: press ⌘C"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done("Copied"), select); else select();
+  });
+}
+(function blastUI() {
+  const pre = D.blasts || [];
+  const presets = $("#presets");
+  const examples = pre.map(b => b.request);
+  ["add a daily login reward", "rename the medals"].forEach(x => { if (!examples.includes(x)) examples.push(x); });
+  examples.forEach(x => { const b = h("button", {type: "button"}); b.textContent = x; b.addEventListener("click", () => go(x)); presets.appendChild(b); });
+  function go(text) {
+    text = text.trim(); if (!text) return;
+    $("#blastInput").value = text;
+    const cached = pre.find(b => b.request.toLowerCase() === text.toLowerCase());
+    if (cached) { renderBlast(cached, "cli"); return; }
+    try { renderBlast(Blast.run(text), "browser"); }
+    catch (err) { $("#blastOut").innerHTML = `<p class="note">The in-page analysis failed on this request (${esc(err.message)}). The CLI gives the same answer: <code>vibecheck blast . "${esc(text)}"</code></p>`; }
+  }
+  $("#blastForm").addEventListener("submit", e => { e.preventDefault(); go($("#blastInput").value); });
+  if (examples.length) go(examples[0]);
+})();
+
+/* ------------------------------------------------------------------ history */
+(function history() {
+  const tl = D.timeline, body = $("#historyBody");
+  if (!tl || !tl.length) { body.innerHTML = `<p class="note">Run <code>vibecheck scan --timeline</code> to score every commit.</p>`; return; }
+  const W = 1000, H = 300, m = {l: 40, r: 132, t: 26, b: 34};
+  const x = i => m.l + (tl.length === 1 ? 0 : i * (W - m.l - m.r) / (tl.length - 1));
+  const y = v => m.t + (100 - v) * (H - m.t - m.b) / 100;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Vibe Debt Score at each commit">`;
+  [[0, ""], [25, "hand over"], [45, "with a pack"], [65, "supervised"], [100, "stabilize first"]].forEach(([v, lbl]) => {
+    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${css(v === 0 ? "--rule" : "--grid")}" />`;
+    s += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+    if (lbl && v < 100) s += `<text x="${W - m.r + 8}" y="${y(v) - 5}" class="lbl">${lbl} ↑</text>`;
+  });
+  let lastDay = "";
+  tl.forEach((c, i) => { const d = fmtDate(c.ts); if (d !== lastDay) { s += `<line x1="${x(i)}" x2="${x(i)}" y1="${H - m.b}" y2="${H - m.b + 5}" stroke="${css("--rule")}"/><text x="${x(i)}" y="${H - m.b + 18}" text-anchor="middle">${d.slice(5)}</text>`; lastDay = d; } });
+  const pts = tl.map((c, i) => [x(i), y(c.score)]);
+  s += `<path d="M${pts[0][0]},${y(0)} ${pts.map(p => "L" + p[0] + "," + p[1]).join(" ")} L${pts[pts.length - 1][0]},${y(0)} Z" fill="${css("--area")}"/>`;
+  s += `<path d="${pts.map((p, i) => (i ? "L" : "M") + p[0] + "," + p[1]).join(" ")}" fill="none" stroke="${css("--s1")}" stroke-width="2"/>`;
+  tl.forEach((c, i) => {
+    const hi = (c.findings.high || 0) > 0;
+    if (hi) s += `<circle cx="${x(i)}" cy="${y(c.score)}" r="7.5" fill="none" stroke="${css("--crit")}" stroke-width="2"/>`;
+    s += `<circle cx="${x(i)}" cy="${y(c.score)}" r="${i === tl.length - 1 ? 5 : 3}" fill="${css("--s1")}" stroke="${css("--sheet")}" stroke-width="1.5"/>`;
+  });
+  const last = tl[tl.length - 1];
+  s += `<text x="${x(tl.length - 1) + 10}" y="${y(last.score) + 4}" class="ink" font-weight="700">${last.score.toFixed(0)}</text>`;
+  const minI = tl.reduce((a, c, i) => c.score < tl[a].score ? i : a, 0);
+  if (minI !== tl.length - 1 && minI < tl.length - 3) s += `<text x="${x(minI)}" y="${y(tl[minI].score) + 24}" text-anchor="middle" class="lbl">lowest ${tl[minI].score.toFixed(0)}</text>`;
+  tl.forEach((c, i) => { s += `<rect x="${x(i) - (W - m.l - m.r) / tl.length / 2}" y="${m.t}" width="${(W - m.l - m.r) / tl.length}" height="${H - m.t - m.b}" fill="transparent" data-i="${i}"/>`; });
+  s += `<line id="xhair" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="${css("--ink-3")}" stroke-dasharray="3 3" visibility="hidden"/></svg>`;
+  const events = caughtEvents();
+  body.innerHTML = `<div class="chart" id="tlChart">${s}<div class="tip" id="tlTip" hidden></div></div>
+    <div class="legend"><span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="${css("--s1")}" stroke-width="2"/></svg>Vibe Debt Score</span>
+      <span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="${css("--crit")}" stroke-width="2"/></svg>commit with a high finding</span></div>
+    ${events.length ? `<h3 style="margin-top:22px">High findings through history</h3><div class="scroll-x"><table class="plain"><thead><tr><th>Finding</th><th>First seen</th><th>Fixed in</th><th>Evidence</th></tr></thead><tbody>
+      ${events.map(e => `<tr><td>${e.items.length > 1 ? `<b>${e.items.length}×</b> ` : ""}${codeify(e.items[0].title)}${e.items.length > 1 ? ` <span class="muted">and ${e.items.length - 1} more of the same kind</span>` : ""}</td>
+        <td class="mono">${esc(e.from.sha)}<div class="muted">${esc(e.from.subject.slice(0, 60))}</div></td>
+        <td class="mono">${e.fixed ? esc(e.fixed.sha) + `<div class="muted">${esc(e.fixed.subject.slice(0, 60))}</div>` : "still present"}</td>
+        <td class="mono">${(e.items[0].evidence || []).slice(0, 1).map(v => esc(v.file) + ":" + v.line).join("")}</td></tr>`).join("")}</tbody></table></div>` : ""}
+    <details class="box" style="margin-top:16px"><summary>Every commit (${tl.length})</summary><div class="inner scroll-x"><table class="plain"><thead><tr><th>Commit</th><th>Subject</th><th>Written with</th><th class="n">Score</th><th class="n">Δ</th><th class="n">Lines</th></tr></thead><tbody>
+      ${tl.map((c, i) => { const dlt = i ? c.score - tl[i - 1].score : 0; return `<tr><td class="mono">${esc(c.sha)}<div class="muted">${fmtDate(c.ts)}</div></td><td>${esc(c.subject)}</td><td>${esc((c.ai || "").replace(/\s*<.*$/, ""))}</td><td class="n">${c.score.toFixed(1)}</td><td class="n">${i ? (dlt > 0 ? "+" : "") + dlt.toFixed(1) : ""}</td><td class="n">${c.loc.toLocaleString()}</td></tr>`; }).join("")}
+    </tbody></table></div></details>`;
+  const chart = $("#tlChart"), tip = $("#tlTip"), xh = chart.querySelector("#xhair");
+  chart.querySelectorAll("rect[data-i]").forEach(r => {
+    r.addEventListener("mouseenter", () => {
+      const i = +r.dataset.i, c = tl[i];
+      xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+      tip.innerHTML = `<b>${esc(c.sha)}</b> · ${fmtDate(c.ts)} · score ${c.score.toFixed(1)}<br>${esc(c.subject)}${c.high.length ? `<br><span style="opacity:.8">${c.high.length} high: ${esc(c.high[0].title)}</span>` : ""}`;
+      tip.hidden = false;
+      const box = chart.getBoundingClientRect(), px = x(i) / W * box.width;
+      tip.style.left = Math.max(4, Math.min(box.width - 290, px + 10)) + "px";
+      tip.style.top = "8px";
+    });
+    r.addEventListener("mouseleave", () => { tip.hidden = true; xh.setAttribute("visibility", "hidden"); });
+  });
+})();
+
+/* ------------------------------------------------------------------ backtest */
+(function backtest() {
+  const bt = D.backtest, body = $("#backtestBody");
+  if (!bt || !bt.samples) { body.innerHTML = `<p class="note">Run <code>vibecheck scan --backtest</code> to measure the blast radius against this repository's history.</p>`; return; }
+  const vs = bt.summary.seeded.vibecheck, rnd = bt.summary.seeded.random, rq = bt.summary.request.vibecheck;
+  const chart = (mode, title) => {
+    const rows = Object.entries(bt.summary[mode]).sort((a, b) => b[1]["recall@5"] - a[1]["recall@5"]);
+    const W = 520, rowH = 34, m = {l: 124, r: 64, t: 26, b: 26}, H = m.t + m.b + rows.length * rowH;
+    const x = v => m.l + v * (W - m.l - m.r);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(title)}">`;
+    [0, .25, .5, .75, 1].forEach(v => { s += `<line x1="${x(v)}" x2="${x(v)}" y1="${m.t - 6}" y2="${H - m.b}" stroke="${css(v === 0 ? "--rule" : "--grid")}"/><text x="${x(v)}" y="${H - m.b + 16}" text-anchor="middle">${v === 0 ? "0" : v === 1 ? "all" : v * 100 + "%"}</text>`; });
+    rows.forEach(([name, v], i) => {
+      const yy = m.t + i * rowH + rowH / 2, main = name === "vibecheck";
+      const ink = css(main ? "--ink" : "--ink-3");
+      s += `<text x="${m.l - 10}" y="${yy + 4}" text-anchor="end" ${main ? 'class="ink" font-weight="700"' : 'class="lbl"'}>${esc(name === "vibecheck" ? "VibeCheck" : name)}</text>`;
+      s += `<line x1="${x(v["recall@5"])}" x2="${x(v["recall@10"])}" y1="${yy}" y2="${yy}" stroke="${ink}" stroke-width="${main ? 2.5 : 1.5}"/>`;
+      s += `<circle cx="${x(v["recall@5"])}" cy="${yy}" r="${main ? 6 : 5}" fill="${ink}" stroke="${css("--sheet")}" stroke-width="2"><title>${esc(name)} recall@5 ${v["recall@5"].toFixed(2)}</title></circle>`;
+      s += `<circle cx="${x(v["recall@10"])}" cy="${yy}" r="${main ? 5.5 : 4.5}" fill="${css("--sheet")}" stroke="${ink}" stroke-width="2"><title>${esc(name)} recall@10 ${v["recall@10"].toFixed(2)}</title></circle>`;
+      s += `<text x="${W - m.r + 8}" y="${yy + 4}" ${main ? 'class="ink" font-weight="700"' : 'class="lbl"'}>${v["recall@5"].toFixed(2)} · ${v["recall@10"].toFixed(2)}</text>`;
+    });
+    s += `<text x="${m.l}" y="14" class="lbl" font-weight="600">${esc(title)}</text></svg>`;
+    return `<div class="chart">${s}</div>`;
+  };
+  body.innerHTML = `
+    <div class="kpis">
+      <div><b>${Math.round(vs["recall@5"] * 100)}%</b><span>of the files a commit also changed are in the top 5, given its main file (random: ${Math.round(rnd["recall@5"] * 100)}%)</span></div>
+      <div><b>${Math.round(rq["hit@5"] * 100)}%</b><span>of commits have a changed file in the top 5 from the subject line alone</span></div>
+      <div><b>${bt.samples}</b><span>commits replayed of ${bt.commits_total}; ${bt.seconds}s</span></div>
+    </div>
+    <div class="bt">${chart("seeded", "Given the file the commit changed most")}${chart("request", "Given only the commit's subject line")}</div>
+    <div class="legend"><span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="${css("--ink")}"/></svg>share of changed files found in the top 5</span><span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4" fill="none" stroke="${css("--ink")}" stroke-width="2"/></svg>in the top 10</span></div>
+    <p class="note" style="margin-top:12px">${esc(bt.method_note)} The graph's weights were set before this backtest was run and were not tuned on it. With ${bt.samples} commits from one repository, the gap between VibeCheck and its single-signal baselines is within noise; the gap to random and same-directory guessing is not.</p>
+    <details class="box" style="margin-top:12px"><summary>Every replayed commit</summary><div class="inner scroll-x"><table class="plain"><thead><tr><th>Commit</th><th>Main file</th><th class="n">Also changed</th><th class="n">VibeCheck top 10</th><th class="n">Static only</th><th class="n">Co-change only</th></tr></thead><tbody>
+      ${bt.details.map(d => `<tr><td class="mono">${esc(d.sha)}<div class="muted">${esc(d.subject.slice(0, 64))}</div></td><td class="mono">${esc(base(d.seed))}</td><td class="n">${d.truth.length}</td>
+        <td class="n">${Math.round(d.seeded.vibecheck["recall@10"] * 100)}%</td><td class="n">${Math.round(d.seeded["static only"]["recall@10"] * 100)}%</td><td class="n">${Math.round(d.seeded["co-change only"]["recall@10"] * 100)}%</td></tr>`).join("")}
+    </tbody></table></div></details>`;
+})();
+
+/* ------------------------------------------------------------------ method */
+(function method() {
+  const sc = D.score;
+  $("#methodBody").innerHTML = `
+    <div>
+      <h3>What is read</h3>
+      <p>Every text file at the scanned commit, straight from git, with nothing checked out. GDScript and Godot scenes and settings are parsed; Python uses its own parser; other languages get a tokenizer. The commit log supplies which files change together. No code leaves the machine, and no model is called unless you ask for a review.</p>
+      <h3>What is checked</h3>
+      <ul>
+        <li><b>String contracts.</b> Keys routed through dictionaries and <code>match</code> statements, followed across files; payload keys a handler reads against what each sender sends; signals, meta keys, groups and input actions; members of globals that no longer exist.</li>
+        <li><b>Documented rules.</b> Boundaries written in agent instructions (“no <code>UI</code>, no <code>Game</code>”) checked against the dependency graph, transitively.</li>
+        <li><b>Build and export.</b> Compile-time dependencies on files the export leaves out; resource paths that do not exist.</li>
+        <li><b>Prompt archaeology.</b> Stale names in the docs agents read first, prompts marked dead that are still runnable, elision markers and chat voice left in code.</li>
+        <li><b>Structure.</b> Duplicated logic on normalized tokens, large files and long functions, cycles, hubs, and co-change with no reference.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>How the score is built</h3>
+      <p>Six categories, weighted: ${Object.entries(sc.weights).map(([k, w]) => `${esc(sc.categories[k].label)} ${Math.round(w * 100)}%`).join(", ")}. Each category is the mean of its components; each component maps a measured value onto 0 to 100 between two hand-set thresholds, shown in the result panel. Agent instructions and an architecture test each earn a 10-point credit on agent-edit risk. These thresholds are judgment, not yet calibrated against a corpus of repositories.</p>
+      <h3>What it cannot see</h3>
+      <ul>
+        <li>Behaviour. A dependency that exists only at runtime through an untyped variable is invisible; calls through such variables are linked only when the name is unambiguous.</li>
+        <li>Intent. A <code>has()</code>-guarded read of a key nothing writes is reported as dead, even when data arrives from outside the repository.</li>
+        <li>Design. Whether a hub deserves to be a hub. That is what the optional review by Claude is for, written from the context pack.</li>
+      </ul>
+      <h3>Run it</h3>
+      <pre class="cli">python3 -m vibecheck scan . --ask "add multiplayer" --timeline --backtest
+python3 -m vibecheck blast . "replace the inventory system"
+python3 -m vibecheck check . --fail-on high     # CI gate
+python3 -m vibecheck scan . --review            # needs: pip install anthropic</pre>
+    </div>`;
+  $("#foot").innerHTML = `VibeCheck ${esc(D.tool.version)} · scoring ${esc(sc.version)} · ${esc(D.repo.name)} @ ${esc(D.repo.short)} · scanned in ${D.stats.timings.total}s`;
+})();
+
+/* the scan and the blast-radius engine, for the console and for checking against the CLI */
+window.VibeCheck = {data: D, blast: Blast.run};
+
+/* ------------------------------------------------------------------ section index */
+(function toc() {
+  const links = [...document.querySelectorAll(".toc a")];
+  const secs = links.map(a => document.querySelector(a.getAttribute("href")));
+  const onScroll = () => {
+    let cur = 0;
+    secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 120) cur = i; });
+    links.forEach((a, i) => a.classList.toggle("on", i === cur));
+  };
+  document.addEventListener("scroll", onScroll, {passive: true});
+  onScroll();
+})();
+})();
+</script>
