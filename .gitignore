@@ -4,3 +4,7 @@ vibecheck-report/
 out/
 corpus/
 .DS_Store
+build/
+dist/
+*.egg-info/
+node_modules/

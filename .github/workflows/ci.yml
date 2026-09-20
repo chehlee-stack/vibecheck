@@ -1,0 +1,32 @@
+name: Build and verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: python -m unittest discover tests -v
+      - run: node --check vibecheck/assets/report.js
+      - run: npm ci --prefix tests --ignore-scripts --no-audit --no-fund
+      - run: python -m pip wheel --no-deps . --wheel-dir dist
+      - run: python -m pip install dist/*.whl
+      - name: Installed package smoke test outside the source tree
+        working-directory: /tmp
+        run: gcaa scan "$GITHUB_WORKSPACE" --out "$RUNNER_TEMP/gcaa-report"
+      - name: Report interaction checks (DOM only)
+        run: NODE_PATH=tests/node_modules node tests/ui-smoke.cjs "$RUNNER_TEMP/gcaa-report/report.html"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gcaa-report-py${{ matrix.python }}
+          path: ${{ runner.temp }}/gcaa-report/

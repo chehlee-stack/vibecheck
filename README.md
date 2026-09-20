@@ -1,7 +1,19 @@
-# VibeCheck
+# GCAA — Generative Code Architecture Assessor
 
-An auditor for codebases built with AI agents. Point it at a repository and it answers one
+Formerly VibeCheck. An auditor for codebases built with AI agents. Point it at a repository and it answers one
 question: **what happens when the next agent edits this?**
+
+Install locally (Python 3.9+ and Git):
+
+```bash
+python3 -m pip install .
+gcaa scan . --out gcaa-report
+gcaa blast . "refactor the report renderer"
+```
+
+The `vibecheck` command and `python3 -m vibecheck` remain supported. The Python
+runtime has no required third-party dependencies. Node and jsdom are used only by
+development tests, not to scan repositories or view reports.
 
 ```bash
 python3 -m vibecheck scan .                          # audit + interactive HTML report
@@ -43,10 +55,20 @@ break things:
 | `timeline` | The score at every commit |
 | `backtest` | How well the blast radius predicted the repository's real commits |
 
-The report holds the **Vibe Debt Score** (six categories, every threshold shown), the **Do Not
-Let AI Touch This** ranking, the **Repo MRI** dependency graph, and a blast-radius box you can
-type any change into — the same engine as the CLI, ported to the page and checked against it
-byte for byte.
+The report opens with a GCAA overview and review priorities, followed by a change
+planner, searchable findings, file risk, and an interactive dependency map. The
+architecture debt score retains the original six categories and thresholds.
+Findings link directly to their evidence and into the planner. Handoff briefs can
+be copied or downloaded; scan data can be exported as JSON.
+
+The HTML embeds its data, styles, JavaScript and SVG graph. No CDN, web fonts,
+network access or server is needed to use it. Graph files are grouped by directory
+in a stable layout; the graph supports keyboard selection, search, pan and zoom.
+A directory grouping is not a claim about architectural boundaries.
+
+The browser blast-radius engine is maintained alongside the Python engine.
+Regression tests compare entry points, impacted files and exact handoff text for
+six representative requests. This guards those scenarios, not every possible input.
 
 ### The Agent Handoff Pack
 
@@ -128,6 +150,32 @@ vibecheck/
   score.py       the Vibe Debt Score
   blast.py       blast radius and the handoff pack
   backtest.py    predictions scored against real commits
-  report.py      renders template.html with the scan embedded in it
+  report.py      assembles the self-contained report and safely embeds JSON
+  template.html  semantic report structure
+  assets/        report.css · report.js · independently testable blast.js
 tests/           python3 -m unittest discover tests
 ```
+
+## Development and verification
+
+```bash
+python3 -m unittest discover tests -v
+node --check vibecheck/assets/report.js
+npm ci --prefix tests --ignore-scripts
+python3 -m vibecheck scan . --out /tmp/gcaa-report
+NODE_PATH=tests/node_modules node tests/ui-smoke.cjs /tmp/gcaa-report/report.html
+python3 -m pip wheel --no-deps . --wheel-dir dist
+```
+
+GitHub Actions tests Python 3.9 and 3.12, checks Python/JavaScript agreement,
+exercises report interactions in jsdom, builds a wheel and smoke-tests the
+installed command outside the source checkout. jsdom does not check visual layout;
+review the report in desktop and mobile browsers before merging a UI change.
+
+URL scans fetch the remote and resolve HEAD to the fetched origin default branch;
+explicit branch names resolve to origin before local refs. Local path scans retain
+snapshot semantics: HEAD is the committed tree, not uncommitted changes. A failed
+remote refresh stops the scan rather than silently using stale content.
+
+See [the bake-off notes](docs/BAKEOFF.md) for findings, changes, measured comparisons
+and the remaining limitations.
