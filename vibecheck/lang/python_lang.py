@@ -134,9 +134,12 @@ def parse(path: str, src: str) -> FileFacts:
         elif isinstance(node, ast.ImportFrom):
             mod = "." * node.level + (node.module or "")
             ff.imports.append((mod, ln, "from"))
-            if node.level and not node.module:
-                for a in node.names:
-                    ff.imports.append(("." * node.level + a.name, ln, "from"))
+            # `from package import module` also depends on package/module.py.
+            # Resolving only `package` hid these edges, including test imports.
+            prefix = mod + ("." if node.module else "")
+            for a in node.names:
+                if a.name != "*":
+                    ff.imports.append((prefix + a.name, ln, "from"))
         elif isinstance(node, ast.Call):
             fn, recv = None, None
             if isinstance(node.func, ast.Name):

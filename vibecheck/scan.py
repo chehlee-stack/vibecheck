@@ -21,7 +21,7 @@ from . import smells as smells_mod
 from .findings import attach_source, finding, sort_findings
 from .repo import Snapshot, git, is_git_repo, snapshot
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 @dataclass
@@ -75,6 +75,12 @@ def run(root: Path, ref: Optional[str] = "HEAD", commits: Optional[List[history_
     secret = risk_mod.secret_controllers(metrics, ranking)
 
     findings = list(con.findings) + list(sm["findings"]) + boundaries.check(proj)
+    for path, facts in proj.files.items():
+        if facts.parse_error:
+            findings.append(finding("parse.incomplete", "medium", "agent-risk",
+                                    "Incomplete analysis of %s" % path,
+                                    "The parser could not read this file completely: %s. Its dependencies and risk may be understated." % facts.parse_error,
+                                    [(path, 1)]))
     findings += _size_findings(proj, metrics)
     findings += _clone_findings(proj, cl)
     hidden_pairs = _hidden_findings(proj, metrics, hist, findings)
@@ -231,6 +237,8 @@ def to_json(scan: Scan, root: Path, extras: Optional[dict] = None) -> dict:
             "median_commit_files": hist.median_code_files if hist else 0, "median_commit_lines": hist.median_code_lines if hist else 0,
             "edges": len(proj.edges), "tables": len(scan.contracts.tables), "sends": len(scan.contracts.sends),
             "signals": len(scan.contracts.signals), "timings": {k: round(v, 2) for k, v in scan.timings.items()},
+            "parse_errors": [{"file": p, "error": f.parse_error} for p, f in proj.files.items() if f.parse_error],
+            "skipped": dict(Counter(scan.snap.skipped.values())),
         },
         "score": scan.score,
         "findings": scan.findings,

@@ -54,7 +54,8 @@ def clone(target: str, workdir: Path) -> Path:
     name = "%s__%s" % (m.group(1), m.group(2)) if m else re.sub(r"\W+", "_", target)[-60:]
     dest = workdir / name
     if (dest / ".git").exists():
-        subprocess.run(["git", "-C", str(dest), "fetch", "--quiet", "--all"], stderr=subprocess.DEVNULL)
+        # Never silently return a stale scan if refreshing the remote fails.
+        git(dest, "fetch", "--quiet", "origin")
         return dest
     workdir.mkdir(parents=True, exist_ok=True)
     url = target if not re.match(r"^[\w.-]+/[\w.-]+$", target) else "https://github.com/%s.git" % target
@@ -96,7 +97,18 @@ def is_git_repo(root: Path) -> bool:
 
 
 def resolve_ref(root: Path, ref: str = "HEAD") -> str:
-    return git(root, "rev-parse", ref).decode().strip()
+    return git(root, "rev-parse", "--verify", "--end-of-options", ref + "^{commit}").decode().strip()
+
+
+def remote_ref(root: Path, ref: str = "HEAD") -> str:
+    """Resolve URL scans against fetched remote refs without modifying a checkout."""
+    if ref == "HEAD":
+        return resolve_ref(root, "refs/remotes/origin/HEAD")
+    candidate = "refs/remotes/origin/" + ref
+    try:
+        return resolve_ref(root, candidate)
+    except RuntimeError:
+        return resolve_ref(root, ref)
 
 
 def snapshot(root: Path, ref: Optional[str] = "HEAD") -> Snapshot:
@@ -122,12 +134,13 @@ def snapshot(root: Path, ref: Optional[str] = "HEAD") -> Snapshot:
             elif size > MAX_TEXT_BYTES:
                 snap.skipped[path_s] = "large"
             else:
-                wanted.append(path_s)
+                wanted.append((path_s, parts[2].decode("ascii")))
         if wanted:
-            request = "".join("%s:%s\n" % (sha, p) for p in wanted).encode()
+            # Object IDs are unambiguous even when a tracked path contains a newline.
+            request = "".join("%s\n" % oid for _, oid in wanted).encode()
             out = git(root, "cat-file", "--batch", input_bytes=request)
             pos = 0
-            for p in wanted:
+            for p, _ in wanted:
                 nl = out.index(b"\n", pos)
                 header = out[pos:nl].split()
                 pos = nl + 1

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gcaa"
+version = "0.2.0"
+description = "Generative Code Architecture Assessor: evidence for the next agent edit"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+gcaa = "vibecheck.cli:main"
+vibecheck = "vibecheck.cli:main"
+
+[project.optional-dependencies]
+review = ["anthropic"]
+
+[tool.setuptools.packages.find]
+include = ["vibecheck*"]
+
+[tool.setuptools.package-data]
+vibecheck = ["template.html", "assets/*.css", "assets/*.js"]

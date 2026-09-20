@@ -31,9 +31,13 @@ def _root(target: str, workdir: str) -> Path:
         print("cloning %s into %s ..." % (target, wd), file=sys.stderr)
         return repo_mod.clone(target, wd)
     p = Path(target).expanduser()
-    if not p.exists():
-        sys.exit("vibecheck: no such path: %s" % target)
+    if not p.is_dir():
+        raise RuntimeError("not a repository directory: %s" % target)
     return p
+
+
+def _scan_ref(a, root: Path) -> str:
+    return repo_mod.remote_ref(root, a.ref) if repo_mod.is_url(a.repo) else a.ref
 
 
 def _slug(text: str) -> str:
@@ -53,7 +57,8 @@ def cmd_scan(a) -> int:
     root = _root(a.repo, a.workdir)
     out = Path(a.out)
     t = time.time()
-    s = scan_mod.run(root, a.ref)
+    ref = _scan_ref(a, root)
+    s = scan_mod.run(root, ref)
     extras = {"blasts": [], "timeline": None, "backtest": None, "review": None}
     for req in a.ask or DEFAULT_ASKS:
         b = blast_mod.run(s, req)
@@ -64,11 +69,11 @@ def cmd_scan(a) -> int:
     if a.timeline:
         from . import timeline
         print("timeline: scanning every commit ...", file=sys.stderr)
-        extras["timeline"] = timeline.run(root, a.ref, progress=_progress("commit"))
+        extras["timeline"] = timeline.run(root, ref, progress=_progress("commit"))
     if a.backtest:
         from . import backtest
         print("backtest: replaying history ...", file=sys.stderr)
-        extras["backtest"] = backtest.run(root, a.ref, progress=_progress("sample"))
+        extras["backtest"] = backtest.run(root, ref, progress=_progress("sample"))
     result = scan_mod.to_json(s, root, extras)
     from . import llm
     pack_text = llm.context_pack(result)
@@ -83,8 +88,8 @@ def cmd_scan(a) -> int:
     from . import report
     path = report.render(result, out / "report.html")
     sc = result["score"]
-    print("\nVibeCheck  %s @ %s   (%.1fs)" % (result["repo"]["name"], result["repo"]["short"], time.time() - t))
-    print("Vibe Debt Score  %.0f / 100  —  %s" % (sc["total"], sc["tier_label"]))
+    print("\nGCAA  %s @ %s   (%.1fs)" % (result["repo"]["name"], result["repo"]["short"], time.time() - t))
+    print("Architecture debt score  %.0f / 100  —  %s" % (sc["total"], sc["tier_label"]))
     for c in sc["categories"].values():
         print("  %-20s %5.1f" % (c["label"], c["score"]))
     sev = {}
@@ -100,7 +105,7 @@ def cmd_scan(a) -> int:
 
 def cmd_blast(a) -> int:
     root = _root(a.repo, a.workdir)
-    s = scan_mod.run(root, a.ref)
+    s = scan_mod.run(root, _scan_ref(a, root))
     b = blast_mod.run(s, a.request, seeds=a.seed or None)
     if a.json:
         print(json.dumps({k: v for k, v in b.items() if k != "pack"}, indent=1))
@@ -111,7 +116,7 @@ def cmd_blast(a) -> int:
 
 def cmd_check(a) -> int:
     root = _root(a.repo, a.workdir)
-    s = scan_mod.run(root, a.ref, light=True)
+    s = scan_mod.run(root, _scan_ref(a, root), light=True)
     bar = SEVERITY_RANK[a.fail_on]
     failing = [f for f in s.findings if SEVERITY_RANK.get(f["severity"], 0) >= bar and f["category"] == "agent-risk"]
     for f in failing:
@@ -124,7 +129,8 @@ def cmd_check(a) -> int:
 def cmd_timeline(a) -> int:
     from . import timeline
     root = _root(a.repo, a.workdir)
-    tl = timeline.run(root, a.ref, progress=_progress("commit"))
+    tl = timeline.run(root, _scan_ref(a, root), progress=_progress("commit"))
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(tl, indent=1), encoding="utf-8")
     for x in tl:
         print("%s  %5.1f  %s" % (x["sha"], x["score"], x["subject"][:70]))
@@ -134,7 +140,8 @@ def cmd_timeline(a) -> int:
 def cmd_backtest(a) -> int:
     from . import backtest
     root = _root(a.repo, a.workdir)
-    res = backtest.run(root, a.ref, progress=_progress("sample"))
+    res = backtest.run(root, _scan_ref(a, root), progress=_progress("sample"))
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(res, indent=1), encoding="utf-8")
     for mode, methods in res["summary"].items():
         print("\n%s (%d commits)" % (mode, res["samples"]))
@@ -185,4 +192,8 @@ def main(argv=None) -> int:
     kp.set_defaults(fn=cmd_backtest)
 
     a = p.parse_args(argv)
-    return a.fn(a)
+    try:
+        return a.fn(a)
+    except (RuntimeError, OSError) as exc:
+        print("gcaa: %s" % exc, file=sys.stderr)
+        return 2
